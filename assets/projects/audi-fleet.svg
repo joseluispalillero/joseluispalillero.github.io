@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Vista previa de Audi Fleet</title><desc id="desc">Mockup tipo screenshot para el proyecto Audi Fleet.</desc>
+  <rect width="1200" height="750" rx="36" fill="#111827"/><rect x="52" y="52" width="1096" height="646" rx="28" fill="#f9fafb"/>
+  <rect x="52" y="52" width="1096" height="88" rx="28" fill="#1f2937"/><text x="102" y="109" font-family="Inter,Arial" font-size="31" font-weight="800" fill="white">Audi Fleet</text>
+  <rect x="102" y="190" width="280" height="428" rx="26" fill="#111827"/><text x="142" y="250" font-family="Inter,Arial" font-size="24" font-weight="700" fill="#f9fafb">Flota</text><rect x="142" y="300" width="200" height="32" rx="16" fill="#374151"/><rect x="142" y="358" width="160" height="32" rx="16" fill="#4b5563"/><rect x="142" y="416" width="190" height="32" rx="16" fill="#374151"/>
+  <rect x="432" y="190" width="614" height="260" rx="28" fill="#fee2e2"/><path d="M540 354 L616 278 H826 L920 354 Z" fill="#b91c1c"/><circle cx="626" cy="372" r="38" fill="#111827"/><circle cx="844" cy="372" r="38" fill="#111827"/><rect x="610" y="300" width="156" height="46" rx="8" fill="#fecaca"/>
+  <rect x="432" y="492" width="614" height="126" rx="24" fill="#ffffff" stroke="#e5e7eb"/><text x="472" y="548" font-family="Inter,Arial" font-size="24" font-weight="800" fill="#111827">Gestión Vue para vehículos</text><rect x="472" y="574" width="460" height="18" rx="9" fill="#d1d5db"/>
+</svg>
