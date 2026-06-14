@@ -6,175 +6,328 @@
     <title>José Luis Palillero — Desarrollo de Software a la Medida</title>
     <meta name="description" content="Engineer Lead & Arquitecto de Software con más de 15 años de experiencia en desarrollo de software a la medida, soluciones cloud y arquitectura de sistemas.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50:  '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            900: '#0c4a6e',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        * { font-family: 'Inter', sans-serif; }
         html { scroll-behavior: smooth; }
-        .gradient-hero {
-            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0ea5e9 100%);
+
+        /* Animated gradient background */
+        .hero-bg {
+            background: linear-gradient(135deg, #0a0a0f 0%, #0d1b2e 40%, #0a1628 70%, #050d1a 100%);
+            position: relative;
+            overflow: hidden;
         }
-        .card-hover {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%);
+            top: -100px; left: -100px;
+            animation: pulse-glow 6s ease-in-out infinite;
         }
-        .card-hover:hover {
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%);
+            bottom: -50px; right: 10%;
+            animation: pulse-glow 8s ease-in-out infinite reverse;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Glass card */
+        .glass {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+        }
+        .glass-light {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(14,165,233,0.15);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Glow card hover */
+        .glow-card {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: #0f1117;
+        }
+        .glow-card:hover {
+            border-color: rgba(14,165,233,0.4);
+            box-shadow: 0 0 30px rgba(14,165,233,0.1), 0 20px 40px rgba(0,0,0,0.3);
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
         }
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #e0f2fe 0%, #7dd3fc 50%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-text-purple {
+            background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Timeline */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: 24px;
+            bottom: -24px;
+            width: 1px;
+            background: linear-gradient(to bottom, rgba(14,165,233,0.5), transparent);
+        }
+        .timeline-item:last-child::before { display: none; }
+
+        /* Skill bar */
+        .skill-bar-fill {
+            height: 4px;
             border-radius: 9999px;
-            font-size: 0.8rem;
+            background: linear-gradient(90deg, #0ea5e9, #6366f1);
+            animation: fill-bar 1.5s ease-out forwards;
+            width: 0;
+        }
+        @keyframes fill-bar {
+            to { width: var(--target-width); }
+        }
+
+        /* Nav blur */
+        .nav-blur {
+            background: rgba(10,10,15,0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* Badge pill */
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
             font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        /* Certification card glow */
+        .cert-card {
+            background: #0f1117;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s ease;
+        }
+        .cert-card:hover {
+            border-color: rgba(251,146,60,0.4);
+            box-shadow: 0 0 20px rgba(251,146,60,0.08);
+            transform: translateY(-3px);
+        }
+
+        /* Section dark */
+        .section-dark { background: #070a0f; }
+        .section-darker { background: #050810; }
+
+        /* Dot grid background */
+        .dot-grid {
+            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Floating badge animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .float-1 { animation: float 4s ease-in-out infinite; }
+        .float-2 { animation: float 5s ease-in-out infinite 1s; }
+        .float-3 { animation: float 6s ease-in-out infinite 2s; }
+
+        /* Scroll indicator */
+        @keyframes bounce-down {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(6px); opacity: 1; }
+        }
+        .bounce-down { animation: bounce-down 1.5s ease-in-out infinite; }
+
+        /* Tag hover */
+        .tag {
+            transition: all 0.2s;
+            cursor: default;
+        }
+        .tag:hover {
+            background: rgba(14,165,233,0.15);
+            border-color: rgba(14,165,233,0.4);
+            color: #7dd3fc;
         }
     </style>
 </head>
-<body class="font-sans bg-gray-50 text-gray-800 antialiased">
+<body class="bg-[#070a0f] text-gray-100 antialiased">
 
     <!-- Nav -->
-    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+    <nav class="fixed top-0 w-full z-50 nav-blur">
         <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-            <span class="text-brand-700 font-bold text-lg tracking-tight">JLP</span>
-            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-                <a href="#servicios" class="hover:text-brand-600 transition-colors">Servicios</a>
-                <a href="#experiencia" class="hover:text-brand-600 transition-colors">Experiencia</a>
-                <a href="#habilidades" class="hover:text-brand-600 transition-colors">Habilidades</a>
-                <a href="#certificaciones" class="hover:text-brand-600 transition-colors">Certificaciones</a>
-                <a href="#contacto" class="bg-brand-600 text-white px-5 py-2 rounded-full hover:bg-brand-700 transition-colors">Contacto</a>
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-sky-500/20 border border-sky-500/30 flex items-center justify-center">
+                    <span class="text-sky-400 font-bold text-xs">JLP</span>
+                </div>
+                <span class="text-white font-semibold text-sm hidden sm:block">José Luis Palillero</span>
+            </div>
+            <div class="hidden md:flex items-center gap-1 text-sm">
+                <a href="#servicios" class="px-4 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all">Servicios</a>
+                <a href="#experiencia" class="px-4 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all">Experiencia</a>
+                <a href="#habilidades" class="px-4 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all">Habilidades</a>
+                <a href="#certificaciones" class="px-4 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all">Certs</a>
+                <a href="#contacto" class="ml-2 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white font-medium rounded-lg transition-all text-sm">Contacto</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero -->
-    <section class="gradient-hero text-white pt-32 pb-24 px-6">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
-            <div class="flex-1">
-                <span class="badge bg-white/20 text-white mb-4">Disponible para proyectos</span>
-                <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
-                    José Luis Palillero
-                </h1>
-                <p class="text-xl md:text-2xl font-light text-blue-100 mb-6">
-                    Engineer Lead · Arquitecto de Software · AWS Certified
-                </p>
-                <p class="text-blue-100 text-lg max-w-xl leading-relaxed mb-8">
-                    Más de 15 años construyendo software robusto y escalable. Especializado en
-                    <strong class="text-white">desarrollo a la medida</strong>, arquitectura cloud y liderazgo técnico de equipos de alto rendimiento.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#servicios" class="bg-white text-brand-700 font-semibold px-6 py-3 rounded-full hover:bg-blue-50 transition-colors">
-                        Ver servicios
-                    </a>
-                    <a href="https://www.linkedin.com/in/joseluispalillero/" target="_blank"
-                       class="border border-white/50 text-white font-semibold px-6 py-3 rounded-full hover:bg-white/10 transition-colors">
-                        LinkedIn →
-                    </a>
+    <section class="hero-bg dot-grid min-h-screen flex items-center pt-20 pb-16 px-6">
+        <div class="max-w-6xl mx-auto w-full">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+
+                <div class="flex-1 relative z-10">
+                    <!-- Status badge -->
+                    <div class="inline-flex items-center gap-2 pill bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 mb-6">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Disponible para proyectos
+                    </div>
+
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] mb-5 tracking-tight">
+                        <span class="text-white">José Luis</span><br>
+                        <span class="gradient-text">Palillero</span>
+                    </h1>
+
+                    <p class="text-lg text-gray-400 mb-3 font-medium">
+                        Engineer Lead · Arquitecto de Software · AWS Certified
+                    </p>
+
+                    <p class="text-gray-500 text-base leading-relaxed max-w-lg mb-8">
+                        +15 años construyendo software robusto y escalable en empresas de alto impacto.
+                        Especialista en <span class="text-sky-400 font-medium">desarrollo a la medida</span>,
+                        arquitectura cloud y liderazgo de equipos de ingeniería.
+                    </p>
+
+                    <div class="flex flex-wrap gap-3">
+                        <a href="#servicios"
+                           class="px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-sky-500/25 text-sm">
+                            Ver servicios →
+                        </a>
+                        <a href="https://www.linkedin.com/in/joseluispalillero/" target="_blank"
+                           class="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 font-semibold rounded-xl transition-all text-sm">
+                            LinkedIn
+                        </a>
+                    </div>
                 </div>
+
+                <!-- Stats floating cards -->
+                <div class="flex flex-row lg:flex-col gap-4 relative z-10">
+                    <div class="glass-light rounded-2xl p-5 text-center float-1 min-w-[130px]">
+                        <div class="text-3xl font-black text-white mb-1">15+</div>
+                        <div class="text-xs text-gray-400">Años de exp.</div>
+                    </div>
+                    <div class="glass-light rounded-2xl p-5 text-center float-2 min-w-[130px]">
+                        <div class="text-3xl font-black gradient-text mb-1">AWS</div>
+                        <div class="text-xs text-gray-400">Certified Arch.</div>
+                    </div>
+                    <div class="glass-light rounded-2xl p-5 text-center float-3 min-w-[130px]">
+                        <div class="text-3xl font-black text-purple-400 mb-1">Full</div>
+                        <div class="text-xs text-gray-400">Stack Dev</div>
+                    </div>
+                </div>
+
             </div>
-            <div class="hidden md:flex flex-col gap-4 text-center">
-                <div class="bg-white/10 backdrop-blur rounded-2xl p-6 min-w-[160px]">
-                    <div class="text-4xl font-extrabold">15+</div>
-                    <div class="text-blue-200 text-sm mt-1">Años de experiencia</div>
-                </div>
-                <div class="bg-white/10 backdrop-blur rounded-2xl p-6">
-                    <div class="text-4xl font-extrabold">AWS</div>
-                    <div class="text-blue-200 text-sm mt-1">Certified Architect</div>
-                </div>
-                <div class="bg-white/10 backdrop-blur rounded-2xl p-6">
-                    <div class="text-4xl font-extrabold">Full</div>
-                    <div class="text-blue-200 text-sm mt-1">Stack Developer</div>
+
+            <!-- Scroll hint -->
+            <div class="flex justify-center mt-16">
+                <div class="bounce-down flex flex-col items-center gap-1">
+                    <span class="text-xs text-gray-600">scroll</span>
+                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Servicios -->
-    <section id="servicios" class="py-20 px-6 bg-white">
+    <section id="servicios" class="section-dark py-24 px-6">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-14">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-3">Desarrollo de Software a la Medida</h2>
-                <p class="text-gray-500 max-w-xl mx-auto">Soluciones tecnológicas diseñadas específicamente para los retos de tu negocio.</p>
+            <div class="text-center mb-16">
+                <p class="text-sky-500 text-sm font-semibold uppercase tracking-widest mb-3">Servicios</p>
+                <h2 class="text-3xl md:text-4xl font-black text-white mb-4">Desarrollo de Software <span class="gradient-text">a la Medida</span></h2>
+                <p class="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">Soluciones tecnológicas diseñadas específicamente para los retos de tu negocio, con más de 15 años de experiencia en producción.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                <div class="card-hover bg-gray-50 rounded-2xl p-8 border border-gray-100">
-                    <div class="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-5">
-                        <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                <div class="glow-card rounded-2xl p-7">
+                    <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center mb-5">
+                        <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-bold mb-2">Desarrollo Full Stack</h3>
+                    <h3 class="text-white font-bold mb-2">Desarrollo Full Stack</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">Aplicaciones web y móviles completas, desde el frontend hasta la base de datos, adaptadas a tus procesos de negocio.</p>
                 </div>
 
-                <div class="card-hover bg-gray-50 rounded-2xl p-8 border border-gray-100">
-                    <div class="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-5">
-                        <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                <div class="glow-card rounded-2xl p-7">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-5">
+                        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-bold mb-2">Arquitectura de Sistemas</h3>
+                    <h3 class="text-white font-bold mb-2">Arquitectura de Sistemas</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">Diseño de arquitecturas escalables, microservicios y sistemas distribuidos que crecen con tu empresa.</p>
                 </div>
 
-                <div class="card-hover bg-gray-50 rounded-2xl p-8 border border-gray-100">
-                    <div class="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-5">
-                        <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                <div class="glow-card rounded-2xl p-7">
+                    <div class="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-5">
+                        <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-bold mb-2">Cloud & AWS</h3>
+                    <h3 class="text-white font-bold mb-2">Cloud & AWS</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">Implementación y optimización de infraestructura cloud en AWS. Certificado como Solutions Architect Associate.</p>
                 </div>
 
-                <div class="card-hover bg-gray-50 rounded-2xl p-8 border border-gray-100">
-                    <div class="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-5">
-                        <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582 4 8 4"/>
+                <div class="glow-card rounded-2xl p-7">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-5">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582 4 8 4"/>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-bold mb-2">Administración de Base de Datos</h3>
+                    <h3 class="text-white font-bold mb-2">Administración de BD</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">Diseño, optimización y administración de bases de datos relacionales y no relacionales para alto rendimiento.</p>
                 </div>
 
-                <div class="card-hover bg-gray-50 rounded-2xl p-8 border border-gray-100">
-                    <div class="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-5">
-                        <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <div class="glow-card rounded-2xl p-7">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-5">
+                        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-bold mb-2">Liderazgo Técnico</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Dirección y mentoría de equipos de desarrollo. Implementación de buenas prácticas, CI/CD y cultura de calidad de software.</p>
+                    <h3 class="text-white font-bold mb-2">Liderazgo Técnico</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Dirección y mentoría de equipos de desarrollo. CI/CD, buenas prácticas y cultura de calidad de software.</p>
                 </div>
 
-                <div class="card-hover bg-gray-50 rounded-2xl p-8 border border-gray-100">
-                    <div class="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-5">
-                        <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                <div class="glow-card rounded-2xl p-7">
+                    <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center mb-5">
+                        <svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-bold mb-2">Consultoría & QA</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Auditoría de proyectos existentes, mejora de procesos y estrategias de pruebas para garantizar la calidad del software.</p>
+                    <h3 class="text-white font-bold mb-2">Consultoría & QA</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Auditoría de proyectos, mejora de procesos y estrategias de pruebas para garantizar la calidad del software.</p>
                 </div>
 
             </div>
@@ -182,91 +335,104 @@
     </section>
 
     <!-- Experiencia -->
-    <section id="experiencia" class="py-20 px-6 bg-gray-50">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-14">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-3">Experiencia Profesional</h2>
-                <p class="text-gray-500">Trayectoria en empresas de tecnología de alto impacto</p>
+    <section id="experiencia" class="section-darker py-24 px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <p class="text-sky-500 text-sm font-semibold uppercase tracking-widest mb-3">Trayectoria</p>
+                <h2 class="text-3xl md:text-4xl font-black text-white">Experiencia <span class="gradient-text">Profesional</span></h2>
             </div>
-            <div class="space-y-6">
 
-                <div class="card-hover bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div class="flex items-start gap-5">
-                            <div class="w-14 h-14 rounded-xl bg-orange-100 flex items-center justify-center font-extrabold text-orange-600 text-lg flex-shrink-0">R</div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900">Engineer Lead</h3>
-                                <p class="text-brand-600 font-semibold">Rappi</p>
-                                <p class="text-gray-500 text-sm mt-1">Liderazgo técnico de equipos de ingeniería en una de las principales super-apps de Latinoamérica. Diseño de sistemas distribuidos, definición de arquitecturas y gestión de squads multifuncionales.</p>
+            <div class="relative pl-8 border-l border-white/5">
+
+                <!-- Item 1 -->
+                <div class="relative timeline-item mb-10">
+                    <div class="absolute -left-[41px] w-5 h-5 rounded-full bg-sky-500 border-4 border-[#050810] flex items-center justify-center">
+                        <div class="w-2 h-2 rounded-full bg-white"></div>
+                    </div>
+                    <div class="glow-card rounded-2xl p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-orange-500/15 border border-orange-500/20 flex items-center justify-center font-bold text-orange-400 text-sm flex-shrink-0">R</div>
+                                <div>
+                                    <h3 class="text-white font-bold">Engineer Lead</h3>
+                                    <p class="text-sky-400 text-sm font-medium">Rappi</p>
+                                </div>
                             </div>
+                            <span class="pill bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 self-start">Nov 2022 — Presente</span>
                         </div>
-                        <div class="flex-shrink-0">
-                            <span class="badge bg-green-100 text-green-700">Nov 2022 — Presente</span>
-                        </div>
+                        <p class="text-gray-500 text-sm leading-relaxed">Liderazgo técnico de equipos de ingeniería en una de las principales super-apps de Latinoamérica. Diseño de sistemas distribuidos, definición de arquitecturas y gestión de squads multifuncionales.</p>
                     </div>
                 </div>
 
-                <div class="card-hover bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div class="flex items-start gap-5">
-                            <div class="w-14 h-14 rounded-xl bg-orange-100 flex items-center justify-center font-extrabold text-orange-600 text-lg flex-shrink-0">R</div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900">Full Stack Developer</h3>
-                                <p class="text-brand-600 font-semibold">Rappi</p>
-                                <p class="text-gray-500 text-sm mt-1">Desarrollo de funcionalidades críticas en el stack completo. Trabajo en equipo ágil con entregas de alto impacto.</p>
+                <!-- Item 2 -->
+                <div class="relative timeline-item mb-10">
+                    <div class="absolute -left-[41px] w-5 h-5 rounded-full bg-sky-500/50 border-4 border-[#050810]"></div>
+                    <div class="glow-card rounded-2xl p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-orange-500/15 border border-orange-500/20 flex items-center justify-center font-bold text-orange-400 text-sm flex-shrink-0">R</div>
+                                <div>
+                                    <h3 class="text-white font-bold">Full Stack Developer</h3>
+                                    <p class="text-sky-400 text-sm font-medium">Rappi</p>
+                                </div>
                             </div>
+                            <span class="pill bg-sky-500/10 border border-sky-500/20 text-sky-400 self-start">Jun 2021</span>
                         </div>
-                        <div class="flex-shrink-0">
-                            <span class="badge bg-blue-100 text-blue-700">Jun 2021</span>
-                        </div>
+                        <p class="text-gray-500 text-sm leading-relaxed">Desarrollo de funcionalidades críticas en el stack completo. Trabajo en equipo ágil con entregas de alto impacto.</p>
                     </div>
                 </div>
 
-                <div class="card-hover bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div class="flex items-start gap-5">
-                            <div class="w-14 h-14 rounded-xl bg-purple-100 flex items-center justify-center font-extrabold text-purple-600 text-lg flex-shrink-0">F</div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900">Freelance Fullstack Developer</h3>
-                                <p class="text-brand-600 font-semibold">Proyectos Independientes</p>
-                                <p class="text-gray-500 text-sm mt-1">Desarrollo de software a la medida para múltiples clientes. Proyectos en sectores financiero, deportivo, salud y gobierno.</p>
+                <!-- Item 3 -->
+                <div class="relative timeline-item mb-10">
+                    <div class="absolute -left-[41px] w-5 h-5 rounded-full bg-purple-500/50 border-4 border-[#050810]"></div>
+                    <div class="glow-card rounded-2xl p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-500/20 flex items-center justify-center font-bold text-purple-400 text-sm flex-shrink-0">F</div>
+                                <div>
+                                    <h3 class="text-white font-bold">Freelance Fullstack Developer</h3>
+                                    <p class="text-sky-400 text-sm font-medium">Proyectos Independientes</p>
+                                </div>
                             </div>
+                            <span class="pill bg-purple-500/10 border border-purple-500/20 text-purple-400 self-start">2009 — Presente</span>
                         </div>
-                        <div class="flex-shrink-0">
-                            <span class="badge bg-purple-100 text-purple-700">2009 — Presente</span>
-                        </div>
+                        <p class="text-gray-500 text-sm leading-relaxed">Desarrollo de software a la medida para múltiples clientes. Proyectos en sectores financiero, deportivo, salud y gobierno.</p>
                     </div>
                 </div>
 
-                <div class="card-hover bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div class="flex items-start gap-5">
-                            <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center font-extrabold text-green-600 text-lg flex-shrink-0">RP</div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900">Líder Técnico</h3>
-                                <p class="text-brand-600 font-semibold">RefereePRO</p>
-                                <p class="text-gray-500 text-sm mt-1">Liderazgo del equipo de desarrollo de una plataforma deportiva. Definición de arquitectura y toma de decisiones técnicas.</p>
+                <!-- Item 4 -->
+                <div class="relative timeline-item mb-10">
+                    <div class="absolute -left-[41px] w-5 h-5 rounded-full bg-emerald-500/50 border-4 border-[#050810]"></div>
+                    <div class="glow-card rounded-2xl p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center font-bold text-emerald-400 text-xs flex-shrink-0">RP</div>
+                                <div>
+                                    <h3 class="text-white font-bold">Líder Técnico</h3>
+                                    <p class="text-sky-400 text-sm font-medium">RefereePRO</p>
+                                </div>
                             </div>
+                            <span class="pill bg-gray-500/10 border border-gray-500/20 text-gray-400 self-start">Oct 2016</span>
                         </div>
-                        <div class="flex-shrink-0">
-                            <span class="badge bg-gray-100 text-gray-700">Oct 2016</span>
-                        </div>
+                        <p class="text-gray-500 text-sm leading-relaxed">Liderazgo del equipo de desarrollo de una plataforma deportiva. Definición de arquitectura y toma de decisiones técnicas.</p>
                     </div>
                 </div>
 
-                <div class="card-hover bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div class="flex items-start gap-5">
-                            <div class="w-14 h-14 rounded-xl bg-red-100 flex items-center justify-center font-extrabold text-red-600 text-lg flex-shrink-0">BA</div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900">Líder Técnico</h3>
-                                <p class="text-brand-600 font-semibold">Banco Azteca</p>
-                                <p class="text-gray-500 text-sm mt-1">Liderazgo en proyectos financieros críticos. Migración de portal financiero y sistemas de tesorería con tecnología Java.</p>
+                <!-- Item 5 -->
+                <div class="relative mb-10">
+                    <div class="absolute -left-[41px] w-5 h-5 rounded-full bg-red-500/50 border-4 border-[#050810]"></div>
+                    <div class="glow-card rounded-2xl p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-red-500/15 border border-red-500/20 flex items-center justify-center font-bold text-red-400 text-xs flex-shrink-0">BA</div>
+                                <div>
+                                    <h3 class="text-white font-bold">Líder Técnico</h3>
+                                    <p class="text-sky-400 text-sm font-medium">Banco Azteca</p>
+                                </div>
                             </div>
+                            <span class="pill bg-gray-500/10 border border-gray-500/20 text-gray-400 self-start">2007 — 2008</span>
                         </div>
-                        <div class="flex-shrink-0">
-                            <span class="badge bg-gray-100 text-gray-700">2007 — 2008</span>
-                        </div>
+                        <p class="text-gray-500 text-sm leading-relaxed">Liderazgo en proyectos financieros críticos. Migración de portal financiero y sistemas de tesorería con tecnología Java.</p>
                     </div>
                 </div>
 
@@ -275,125 +441,186 @@
     </section>
 
     <!-- Habilidades -->
-    <section id="habilidades" class="py-20 px-6 bg-white">
+    <section id="habilidades" class="section-dark py-24 px-6">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-14">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-3">Habilidades & Tecnologías</h2>
-                <p class="text-gray-500">Stack técnico construido a lo largo de más de 15 años de práctica</p>
+            <div class="text-center mb-16">
+                <p class="text-sky-500 text-sm font-semibold uppercase tracking-widest mb-3">Stack Técnico</p>
+                <h2 class="text-3xl md:text-4xl font-black text-white">Habilidades & <span class="gradient-text">Tecnologías</span></h2>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div>
-                    <h3 class="font-bold text-gray-700 mb-4 uppercase tracking-wider text-sm">Arquitectura & Backend</h3>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="badge bg-brand-100 text-brand-700">Arquitectura de Sistemas</span>
-                        <span class="badge bg-brand-100 text-brand-700">Microservicios</span>
-                        <span class="badge bg-brand-100 text-brand-700">Arquitectura de Software</span>
-                        <span class="badge bg-brand-100 text-brand-700">Java</span>
-                        <span class="badge bg-brand-100 text-brand-700">Node.js</span>
-                        <span class="badge bg-brand-100 text-brand-700">APIs REST</span>
-                        <span class="badge bg-brand-100 text-brand-700">Sistemas Distribuidos</span>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <!-- Arquitectura -->
+                <div class="glow-card rounded-2xl p-7">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-5">Arquitectura & Backend</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-300">Arquitectura de Sistemas</span>
+                                <span class="text-sky-400">95%</span>
+                            </div>
+                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar-fill" style="--target-width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-300">Microservicios / APIs REST</span>
+                                <span class="text-sky-400">92%</span>
+                            </div>
+                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar-fill" style="--target-width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-300">Java</span>
+                                <span class="text-sky-400">90%</span>
+                            </div>
+                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar-fill" style="--target-width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-300">Node.js</span>
+                                <span class="text-sky-400">85%</span>
+                            </div>
+                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar-fill" style="--target-width: 85%"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <h3 class="font-bold text-gray-700 mb-4 uppercase tracking-wider text-sm">Frontend</h3>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="badge bg-purple-100 text-purple-700">Angular</span>
-                        <span class="badge bg-purple-100 text-purple-700">JavaScript</span>
-                        <span class="badge bg-purple-100 text-purple-700">TypeScript</span>
-                        <span class="badge bg-purple-100 text-purple-700">HTML5 / CSS3</span>
+
+                <!-- Frontend -->
+                <div class="glow-card rounded-2xl p-7">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-5">Frontend</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-300">Angular</span>
+                                <span class="text-purple-400">88%</span>
+                            </div>
+                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar-fill" style="--target-width: 88%; background: linear-gradient(90deg, #a78bfa, #7c3aed)"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-300">TypeScript / JavaScript</span>
+                                <span class="text-purple-400">85%</span>
+                            </div>
+                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar-fill" style="--target-width: 85%; background: linear-gradient(90deg, #a78bfa, #7c3aed)"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-300">HTML5 / CSS3</span>
+                                <span class="text-purple-400">90%</span>
+                            </div>
+                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar-fill" style="--target-width: 90%; background: linear-gradient(90deg, #a78bfa, #7c3aed)"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <h3 class="font-bold text-gray-700 mb-4 uppercase tracking-wider text-sm">Cloud & DevOps</h3>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="badge bg-orange-100 text-orange-700">AWS</span>
-                        <span class="badge bg-orange-100 text-orange-700">Cloud Architecture</span>
-                        <span class="badge bg-orange-100 text-orange-700">Well-Architected</span>
-                        <span class="badge bg-orange-100 text-orange-700">Cloud Economics</span>
-                        <span class="badge bg-orange-100 text-orange-700">CI/CD</span>
+
+                <!-- Cloud -->
+                <div class="glow-card rounded-2xl p-7">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-5">Cloud & DevOps</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag pill bg-orange-500/10 border border-orange-500/15 text-orange-300">AWS</span>
+                        <span class="tag pill bg-orange-500/10 border border-orange-500/15 text-orange-300">Solutions Architect</span>
+                        <span class="tag pill bg-orange-500/10 border border-orange-500/15 text-orange-300">Well-Architected</span>
+                        <span class="tag pill bg-orange-500/10 border border-orange-500/15 text-orange-300">Cloud Economics</span>
+                        <span class="tag pill bg-sky-500/10 border border-sky-500/15 text-sky-300">CI/CD</span>
+                        <span class="tag pill bg-sky-500/10 border border-sky-500/15 text-sky-300">Sistemas Distribuidos</span>
+                        <span class="tag pill bg-sky-500/10 border border-sky-500/15 text-sky-300">DevOps</span>
                     </div>
                 </div>
-                <div>
-                    <h3 class="font-bold text-gray-700 mb-4 uppercase tracking-wider text-sm">Datos & Calidad</h3>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="badge bg-green-100 text-green-700">Administración de BD</span>
-                        <span class="badge bg-green-100 text-green-700">DB2</span>
-                        <span class="badge bg-green-100 text-green-700">SQL</span>
-                        <span class="badge bg-green-100 text-green-700">Pruebas de Software</span>
-                        <span class="badge bg-green-100 text-green-700">Depuración</span>
-                        <span class="badge bg-green-100 text-green-700">Solución de Problemas</span>
+
+                <!-- Datos -->
+                <div class="glow-card rounded-2xl p-7">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-5">Datos & Calidad</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag pill bg-emerald-500/10 border border-emerald-500/15 text-emerald-300">Administración de BD</span>
+                        <span class="tag pill bg-emerald-500/10 border border-emerald-500/15 text-emerald-300">DB2</span>
+                        <span class="tag pill bg-emerald-500/10 border border-emerald-500/15 text-emerald-300">SQL</span>
+                        <span class="tag pill bg-emerald-500/10 border border-emerald-500/15 text-emerald-300">Pruebas de Software</span>
+                        <span class="tag pill bg-emerald-500/10 border border-emerald-500/15 text-emerald-300">Depuración</span>
+                        <span class="tag pill bg-emerald-500/10 border border-emerald-500/15 text-emerald-300">Solución de Problemas</span>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
     <!-- Certificaciones -->
-    <section id="certificaciones" class="py-20 px-6 bg-gray-50">
+    <section id="certificaciones" class="section-darker py-24 px-6">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-14">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-3">Certificaciones</h2>
-                <p class="text-gray-500">Credenciales que validan la experiencia técnica</p>
+            <div class="text-center mb-16">
+                <p class="text-sky-500 text-sm font-semibold uppercase tracking-widest mb-3">Credenciales</p>
+                <h2 class="text-3xl md:text-4xl font-black text-white"><span class="gradient-text">Certificaciones</span></h2>
+                <p class="text-gray-500 mt-3 text-sm">Credenciales verificadas que validan la experiencia técnica</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <a href="https://www.credly.com/badges/63cf7847-6ed7-49f5-911d-f468764b9812/linked_in_profile" target="_blank"
-                   class="card-hover bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-start gap-4">
-                    <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span class="text-orange-600 font-extrabold text-sm">AWS</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                <a href="https://www.credly.com/badges/63cf7847-6ed7-49f5-911d-f468764b9812/linked_in_profile" target="_blank" class="cert-card rounded-2xl p-6 flex items-start gap-4 group">
+                    <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/15 transition-all">
+                        <span class="text-orange-400 font-extrabold text-xs">AWS</span>
                     </div>
                     <div>
-                        <h3 class="font-bold text-gray-900 text-sm">AWS Certified Solutions Architect</h3>
-                        <p class="text-gray-500 text-xs mt-1">Associate — Amazon Web Services</p>
-                        <span class="mt-2 inline-block text-brand-600 text-xs font-medium">Ver credencial →</span>
+                        <h3 class="text-white font-semibold text-sm mb-1">AWS Certified Solutions Architect</h3>
+                        <p class="text-gray-600 text-xs mb-2">Associate · Amazon Web Services</p>
+                        <span class="text-sky-500 text-xs font-medium group-hover:text-sky-400 transition-colors">Ver credencial →</span>
                     </div>
                 </a>
 
-                <a href="https://www.credly.com/badges/504afcfd-ed01-4fcb-a9b5-be31d02b1f84/linked_in_profile" target="_blank"
-                   class="card-hover bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-start gap-4">
-                    <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span class="text-orange-600 font-extrabold text-sm">AWS</span>
+                <a href="https://www.credly.com/badges/504afcfd-ed01-4fcb-a9b5-be31d02b1f84/linked_in_profile" target="_blank" class="cert-card rounded-2xl p-6 flex items-start gap-4 group">
+                    <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/15 transition-all">
+                        <span class="text-orange-400 font-extrabold text-xs">AWS</span>
                     </div>
                     <div>
-                        <h3 class="font-bold text-gray-900 text-sm">Well-Architected Proficient</h3>
-                        <p class="text-gray-500 text-xs mt-1">Amazon Web Services</p>
-                        <span class="mt-2 inline-block text-brand-600 text-xs font-medium">Ver credencial →</span>
+                        <h3 class="text-white font-semibold text-sm mb-1">Well-Architected Proficient</h3>
+                        <p class="text-gray-600 text-xs mb-2">Amazon Web Services</p>
+                        <span class="text-sky-500 text-xs font-medium group-hover:text-sky-400 transition-colors">Ver credencial →</span>
                     </div>
                 </a>
 
-                <a href="https://www.credly.com/badges/7f543a0a-3912-42e0-97b1-dd6e94f72280/linked_in_profile" target="_blank"
-                   class="card-hover bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-start gap-4">
-                    <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span class="text-orange-600 font-extrabold text-sm">AWS</span>
+                <a href="https://www.credly.com/badges/7f543a0a-3912-42e0-97b1-dd6e94f72280/linked_in_profile" target="_blank" class="cert-card rounded-2xl p-6 flex items-start gap-4 group">
+                    <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/15 transition-all">
+                        <span class="text-orange-400 font-extrabold text-xs">AWS</span>
                     </div>
                     <div>
-                        <h3 class="font-bold text-gray-900 text-sm">AWS Cloud Economics Accreditation</h3>
-                        <p class="text-gray-500 text-xs mt-1">Amazon Web Services</p>
-                        <span class="mt-2 inline-block text-brand-600 text-xs font-medium">Ver credencial →</span>
+                        <h3 class="text-white font-semibold text-sm mb-1">AWS Cloud Economics Accreditation</h3>
+                        <p class="text-gray-600 text-xs mb-2">Amazon Web Services</p>
+                        <span class="text-sky-500 text-xs font-medium group-hover:text-sky-400 transition-colors">Ver credencial →</span>
                     </div>
                 </a>
 
-                <a href="https://www.credly.com/badges/befb2956-5725-470d-bb26-3f2a2b9b5d3b/linked_in_profile" target="_blank"
-                   class="card-hover bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-start gap-4">
-                    <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span class="text-orange-600 font-extrabold text-sm">AWS</span>
+                <a href="https://www.credly.com/badges/befb2956-5725-470d-bb26-3f2a2b9b5d3b/linked_in_profile" target="_blank" class="cert-card rounded-2xl p-6 flex items-start gap-4 group">
+                    <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/15 transition-all">
+                        <span class="text-orange-400 font-extrabold text-xs">AWS</span>
                     </div>
                     <div>
-                        <h3 class="font-bold text-gray-900 text-sm">AWS Partner: Accreditation Technical</h3>
-                        <p class="text-gray-500 text-xs mt-1">Amazon Web Services</p>
-                        <span class="mt-2 inline-block text-brand-600 text-xs font-medium">Ver credencial →</span>
+                        <h3 class="text-white font-semibold text-sm mb-1">AWS Partner: Accreditation Technical</h3>
+                        <p class="text-gray-600 text-xs mb-2">Amazon Web Services</p>
+                        <span class="text-sky-500 text-xs font-medium group-hover:text-sky-400 transition-colors">Ver credencial →</span>
                     </div>
                 </a>
 
-                <a href="https://www.hackerrank.com/certificates/8dea692ed5e1" target="_blank"
-                   class="card-hover bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-start gap-4">
-                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span class="text-green-600 font-extrabold text-sm">HR</span>
+                <a href="https://www.hackerrank.com/certificates/8dea692ed5e1" target="_blank" class="cert-card rounded-2xl p-6 flex items-start gap-4 group" style="border-color: rgba(255,255,255,0.06);">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-500/15 transition-all">
+                        <span class="text-emerald-400 font-extrabold text-xs">HR</span>
                     </div>
                     <div>
-                        <h3 class="font-bold text-gray-900 text-sm">Angular Intermediate Certificate</h3>
-                        <p class="text-gray-500 text-xs mt-1">HackerRank</p>
-                        <span class="mt-2 inline-block text-brand-600 text-xs font-medium">Ver credencial →</span>
+                        <h3 class="text-white font-semibold text-sm mb-1">Angular Intermediate Certificate</h3>
+                        <p class="text-gray-600 text-xs mb-2">HackerRank</p>
+                        <span class="text-sky-500 text-xs font-medium group-hover:text-sky-400 transition-colors">Ver credencial →</span>
                     </div>
                 </a>
 
@@ -402,53 +629,85 @@
     </section>
 
     <!-- Educación -->
-    <section class="py-20 px-6 bg-white">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-14">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-3">Educación</h2>
+    <section class="section-dark py-24 px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <p class="text-sky-500 text-sm font-semibold uppercase tracking-widest mb-3">Formación</p>
+                <h2 class="text-3xl md:text-4xl font-black text-white"><span class="gradient-text">Educación</span></h2>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                <div class="card-hover bg-gray-50 rounded-2xl p-8 border border-gray-100">
-                    <div class="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="glow-card rounded-2xl p-7 flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
                         </svg>
                     </div>
-                    <h3 class="font-bold text-gray-900 mb-1">Postgrado</h3>
-                    <p class="text-brand-600 font-medium text-sm">OBS Business School / Universidad de Barcelona</p>
+                    <div>
+                        <h3 class="text-white font-bold mb-1">Postgrado</h3>
+                        <p class="text-sky-400 text-sm font-medium">OBS Business School</p>
+                        <p class="text-gray-600 text-xs mt-1">Universidad de Barcelona</p>
+                    </div>
                 </div>
-                <div class="card-hover bg-gray-50 rounded-2xl p-8 border border-gray-100">
-                    <div class="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                <div class="glow-card rounded-2xl p-7 flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
                         </svg>
                     </div>
-                    <h3 class="font-bold text-gray-900 mb-1">Licenciatura en Ingeniería en Computación</h3>
-                    <p class="text-brand-600 font-medium text-sm">Universidad Autónoma de Tlaxcala</p>
+                    <div>
+                        <h3 class="text-white font-bold mb-1">Lic. Ingeniería en Computación</h3>
+                        <p class="text-indigo-400 text-sm font-medium">Univ. Autónoma de Tlaxcala</p>
+                        <p class="text-gray-600 text-xs mt-1">Engineering degree</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA / Contacto -->
-    <section id="contacto" class="gradient-hero text-white py-20 px-6">
+    <!-- CTA -->
+    <section id="contacto" class="section-darker py-24 px-6">
         <div class="max-w-3xl mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-extrabold mb-4">¿Tienes un proyecto en mente?</h2>
-            <p class="text-blue-100 text-lg mb-8 leading-relaxed">
-                Con más de 15 años de experiencia construyendo software, puedo ayudarte a convertir
-                tu idea en una solución robusta y escalable, a la medida de tu negocio.
-            </p>
-            <a href="https://www.linkedin.com/in/joseluispalillero/" target="_blank"
-               class="inline-block bg-white text-brand-700 font-bold px-10 py-4 rounded-full text-lg hover:bg-blue-50 transition-colors shadow-lg">
-                Hablemos en LinkedIn →
-            </a>
+            <div class="glass rounded-3xl p-12 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-sky-500/5 to-indigo-500/5"></div>
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 pill bg-sky-500/10 border border-sky-500/20 text-sky-400 mb-6">
+                        <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
+                        Disponible para nuevos proyectos
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-black text-white mb-4">¿Tienes un proyecto <span class="gradient-text">en mente?</span></h2>
+                    <p class="text-gray-400 text-base leading-relaxed mb-8 max-w-xl mx-auto">
+                        Con más de 15 años de experiencia construyendo software, puedo ayudarte a convertir tu idea en una solución robusta y escalable, a la medida de tu negocio.
+                    </p>
+                    <a href="https://www.linkedin.com/in/joseluispalillero/" target="_blank"
+                       class="inline-flex items-center gap-2 px-8 py-4 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-all hover:shadow-xl hover:shadow-sky-500/25 text-sm">
+                        Hablemos en LinkedIn
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-8 px-6 text-center text-sm">
-        <p>© 2026 José Luis Palillero · Engineer Lead · Desarrollo de Software a la Medida</p>
+    <footer class="bg-[#030508] border-t border-white/5 py-8 px-6 text-center">
+        <p class="text-gray-600 text-sm">© 2026 José Luis Palillero · Engineer Lead · Desarrollo de Software a la Medida</p>
     </footer>
+
+    <script>
+        // Animate skill bars on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+                        bar.style.width = bar.style.getPropertyValue('--target-width');
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+        document.querySelectorAll('.glow-card').forEach(el => observer.observe(el));
+    </script>
 
 </body>
 </html>
