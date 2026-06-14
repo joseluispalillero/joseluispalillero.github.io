@@ -190,29 +190,40 @@
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="hero-bg dot-grid min-h-screen flex items-center pt-20 pb-16 px-6">
-        <div class="max-w-6xl mx-auto w-full">
-            <div class="flex flex-col lg:flex-row items-center gap-16">
+    <!-- Hero 3D -->
+    <section class="relative h-screen w-full overflow-hidden bg-[#070a0f]">
+        <!-- 3D Canvas -->
+        <canvas id="room-canvas" class="absolute inset-0 w-full h-full block"></canvas>
 
-                <div class="flex-1 relative z-10">
-                    <!-- Status badge -->
-                    <div class="inline-flex items-center gap-2 pill bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 mb-6">
+        <!-- Loading overlay -->
+        <div id="loader" class="absolute inset-0 flex items-center justify-center bg-[#070a0f] z-30 transition-opacity duration-700">
+            <div class="flex flex-col items-center gap-4">
+                <div class="w-10 h-10 border-2 border-sky-500/20 border-t-sky-500 rounded-full animate-spin"></div>
+                <p class="text-gray-500 text-xs tracking-widest uppercase">Cargando entorno 3D</p>
+            </div>
+        </div>
+
+        <!-- Text overlay -->
+        <div class="absolute inset-0 z-20 flex flex-col justify-center px-6 pointer-events-none">
+            <div class="max-w-6xl mx-auto w-full">
+                <div class="max-w-xl pointer-events-auto">
+                    <div class="inline-flex items-center gap-2 pill bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 mb-6 backdrop-blur-sm">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                         Disponible para proyectos
                     </div>
 
-                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] mb-5 tracking-tight">
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] mb-5 tracking-tight"
+                        style="text-shadow: 0 4px 40px rgba(0,0,0,0.8);">
                         <span class="text-white">José Luis</span><br>
                         <span class="gradient-text">Palillero</span>
                     </h1>
 
-                    <p class="text-lg text-gray-400 mb-3 font-medium">
+                    <p class="text-lg text-gray-300 mb-3 font-medium" style="text-shadow: 0 2px 20px rgba(0,0,0,0.9);">
                         Engineer Lead · Arquitecto de Software · AWS Certified
                     </p>
 
-                    <p class="text-gray-500 text-base leading-relaxed max-w-lg mb-8">
-                        +15 años construyendo software robusto y escalable en empresas de alto impacto.
+                    <p class="text-gray-400 text-base leading-relaxed max-w-lg mb-8" style="text-shadow: 0 2px 20px rgba(0,0,0,0.9);">
+                        +15 años construyendo software robusto y escalable.
                         Especialista en <span class="text-sky-400 font-medium">desarrollo a la medida</span>,
                         arquitectura cloud y liderazgo de equipos de ingeniería.
                     </p>
@@ -223,40 +234,34 @@
                             Ver servicios →
                         </a>
                         <a href="https://www.linkedin.com/in/joseluispalillero/" target="_blank"
-                           class="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 font-semibold rounded-xl transition-all text-sm">
+                           class="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 font-semibold rounded-xl transition-all text-sm backdrop-blur-sm">
                             LinkedIn
                         </a>
                     </div>
                 </div>
-
-                <!-- Stats floating cards -->
-                <div class="flex flex-row lg:flex-col gap-4 relative z-10">
-                    <div class="glass-light rounded-2xl p-5 text-center float-1 min-w-[130px]">
-                        <div class="text-3xl font-black text-white mb-1">15+</div>
-                        <div class="text-xs text-gray-400">Años de exp.</div>
-                    </div>
-                    <div class="glass-light rounded-2xl p-5 text-center float-2 min-w-[130px]">
-                        <div class="text-3xl font-black gradient-text mb-1">AWS</div>
-                        <div class="text-xs text-gray-400">Certified Arch.</div>
-                    </div>
-                    <div class="glass-light rounded-2xl p-5 text-center float-3 min-w-[130px]">
-                        <div class="text-3xl font-black text-purple-400 mb-1">Full</div>
-                        <div class="text-xs text-gray-400">Stack Dev</div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Scroll hint -->
-            <div class="flex justify-center mt-16">
-                <div class="bounce-down flex flex-col items-center gap-1">
-                    <span class="text-xs text-gray-600">scroll</span>
-                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </div>
             </div>
         </div>
+
+        <!-- Interaction hint -->
+        <div class="absolute bottom-8 right-8 z-20 hidden md:flex items-center gap-2 text-gray-500 text-xs pointer-events-none">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59"/>
+            </svg>
+            <span>Arrastra para explorar la habitación</span>
+        </div>
+
+        <!-- Scroll hint -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+            <div class="bounce-down flex flex-col items-center gap-1">
+                <span class="text-xs text-gray-500">scroll</span>
+                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Bottom fade into content -->
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#070a0f] to-transparent z-10 pointer-events-none"></div>
     </section>
 
     <!-- Servicios -->
@@ -707,6 +712,335 @@
             });
         }, { threshold: 0.3 });
         document.querySelectorAll('.glow-card').forEach(el => observer.observe(el));
+    </script>
+
+    <!-- Three.js 3D interactive room -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        const canvas = document.getElementById('room-canvas');
+        const loader = document.getElementById('loader');
+
+        // Respect reduced motion / very small screens: still render but lighter
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color('#070a0f');
+        scene.fog = new THREE.Fog('#070a0f', 12, 26);
+
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(6.5, 4.2, 7.5);
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+        // ---- Materials ----
+        const matFloor = new THREE.MeshStandardMaterial({ color: 0x0a0e16, roughness: 0.85, metalness: 0.1 });
+        const matWall  = new THREE.MeshStandardMaterial({ color: 0x0d1320, roughness: 0.95 });
+        const matDesk  = new THREE.MeshStandardMaterial({ color: 0x161b28, roughness: 0.6, metalness: 0.3 });
+        const matMetal = new THREE.MeshStandardMaterial({ color: 0x2a3142, roughness: 0.4, metalness: 0.7 });
+        const matDark  = new THREE.MeshStandardMaterial({ color: 0x0a0d14, roughness: 0.5, metalness: 0.5 });
+
+        // ---- Room ----
+        const room = new THREE.Group();
+        scene.add(room);
+
+        // Floor
+        const floor = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), matFloor);
+        floor.rotation.x = -Math.PI / 2;
+        floor.receiveShadow = true;
+        room.add(floor);
+
+        // Back wall
+        const backWall = new THREE.Mesh(new THREE.PlaneGeometry(20, 12), matWall);
+        backWall.position.set(0, 6, -6);
+        backWall.receiveShadow = true;
+        room.add(backWall);
+
+        // Left wall
+        const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(20, 12), matWall);
+        leftWall.rotation.y = Math.PI / 2;
+        leftWall.position.set(-6, 6, 0);
+        leftWall.receiveShadow = true;
+        room.add(leftWall);
+
+        // Window with city glow on back wall
+        const windowGlow = new THREE.Mesh(
+            new THREE.PlaneGeometry(5, 4),
+            new THREE.MeshBasicMaterial({ color: 0x0ea5e9, transparent: true, opacity: 0.12 })
+        );
+        windowGlow.position.set(2.5, 6.5, -5.95);
+        room.add(windowGlow);
+        const windowFrame = new THREE.Mesh(
+            new THREE.PlaneGeometry(5.3, 4.3),
+            new THREE.MeshStandardMaterial({ color: 0x1a2030, roughness: 0.6 })
+        );
+        windowFrame.position.set(2.5, 6.5, -5.97);
+        room.add(windowFrame);
+        // City dots in the window
+        for (let i = 0; i < 40; i++) {
+            const dot = new THREE.Mesh(
+                new THREE.PlaneGeometry(0.06, 0.06),
+                new THREE.MeshBasicMaterial({ color: Math.random() > 0.5 ? 0x7dd3fc : 0xfbbf24 })
+            );
+            dot.position.set(0.6 + Math.random() * 3.8, 5 + Math.random() * 2.6, -5.94);
+            room.add(dot);
+        }
+
+        // ---- Desk ----
+        const desk = new THREE.Group();
+        desk.position.set(0, 0, -2);
+        room.add(desk);
+
+        const deskTop = new THREE.Mesh(new THREE.BoxGeometry(7, 0.18, 3), matDesk);
+        deskTop.position.y = 2.3;
+        deskTop.castShadow = true; deskTop.receiveShadow = true;
+        desk.add(deskTop);
+
+        [[-3.2, -1.2], [3.2, -1.2], [-3.2, 1.2], [3.2, 1.2]].forEach(([x, z]) => {
+            const leg = new THREE.Mesh(new THREE.BoxGeometry(0.18, 2.3, 0.18), matMetal);
+            leg.position.set(x, 1.15, z);
+            leg.castShadow = true;
+            desk.add(leg);
+        });
+
+        // ---- Monitor with animated code screen ----
+        const monitor = new THREE.Group();
+        monitor.position.set(0, 2.4, -2.6);
+        room.add(monitor);
+
+        // Screen canvas texture (animated code)
+        const screenCanvas = document.createElement('canvas');
+        screenCanvas.width = 512; screenCanvas.height = 320;
+        const sctx = screenCanvas.getContext('2d');
+        const screenTexture = new THREE.CanvasTexture(screenCanvas);
+        const codeLines = [
+            { indent: 0, w: 0.5, c: '#7dd3fc' },
+            { indent: 1, w: 0.7, c: '#a78bfa' },
+            { indent: 1, w: 0.4, c: '#86efac' },
+            { indent: 2, w: 0.8, c: '#fbbf24' },
+            { indent: 2, w: 0.55, c: '#94a3b8' },
+            { indent: 1, w: 0.6, c: '#a78bfa' },
+            { indent: 0, w: 0.35, c: '#7dd3fc' },
+            { indent: 1, w: 0.75, c: '#86efac' },
+            { indent: 2, w: 0.5, c: '#fbbf24' },
+            { indent: 1, w: 0.45, c: '#94a3b8' },
+        ];
+        let codeProgress = 0;
+        function drawScreen() {
+            sctx.fillStyle = '#0a0f1a';
+            sctx.fillRect(0, 0, 512, 320);
+            // header bar
+            sctx.fillStyle = '#131a28';
+            sctx.fillRect(0, 0, 512, 28);
+            ['#ef4444', '#fbbf24', '#22c55e'].forEach((c, i) => {
+                sctx.fillStyle = c;
+                sctx.beginPath(); sctx.arc(18 + i * 20, 14, 5, 0, Math.PI * 2); sctx.fill();
+            });
+            const visible = Math.floor(codeProgress);
+            for (let i = 0; i < codeLines.length; i++) {
+                if (i > visible) break;
+                const line = codeLines[i];
+                const y = 50 + i * 26;
+                sctx.fillStyle = '#1e293b';
+                sctx.fillText(String(i + 1), 8, y + 4);
+                const x = 30 + line.indent * 28;
+                let w = line.w * 380;
+                if (i === visible) w *= (codeProgress - visible);
+                sctx.fillStyle = line.c;
+                sctx.globalAlpha = 0.85;
+                sctx.fillRect(x, y - 8, w, 10);
+                sctx.globalAlpha = 1;
+            }
+            screenTexture.needsUpdate = true;
+        }
+        sctx.font = '12px monospace';
+        drawScreen();
+
+        const screen = new THREE.Mesh(
+            new THREE.PlaneGeometry(3.2, 2),
+            new THREE.MeshBasicMaterial({ map: screenTexture })
+        );
+        screen.position.set(0, 0.15, 0.06);
+        monitor.add(screen);
+
+        const screenBody = new THREE.Mesh(new THREE.BoxGeometry(3.4, 2.2, 0.12), matDark);
+        screenBody.position.set(0, 0.15, 0);
+        screenBody.castShadow = true;
+        monitor.add(screenBody);
+
+        const stand = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.9, 0.2), matMetal);
+        stand.position.set(0, -1.1, 0);
+        monitor.add(stand);
+        const standBase = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.08, 0.6), matMetal);
+        standBase.position.set(0, -1.5, 0);
+        monitor.add(standBase);
+
+        // Screen light
+        const screenLight = new THREE.PointLight(0x0ea5e9, 2.5, 8);
+        screenLight.position.set(0, 2.6, -1.8);
+        room.add(screenLight);
+
+        // ---- Keyboard & mouse ----
+        const keyboard = new THREE.Mesh(new THREE.BoxGeometry(2, 0.1, 0.7), matDark);
+        keyboard.position.set(0, 2.45, -1.4);
+        keyboard.castShadow = true;
+        room.add(keyboard);
+        const mouse3d = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.1, 0.45), matDark);
+        mouse3d.position.set(1.4, 2.45, -1.4);
+        room.add(mouse3d);
+
+        // ---- Desk lamp ----
+        const lampArm = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.6), matMetal);
+        lampArm.position.set(-2.6, 3.1, -2.4);
+        lampArm.rotation.z = 0.3;
+        room.add(lampArm);
+        const lampHead = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.4, 16, 1, true), matMetal);
+        lampHead.position.set(-2.9, 3.8, -2.4);
+        lampHead.rotation.z = Math.PI + 0.5;
+        room.add(lampHead);
+        const lampLight = new THREE.PointLight(0xffb86c, 3, 7);
+        lampLight.position.set(-2.6, 3.6, -2);
+        lampLight.castShadow = true;
+        room.add(lampLight);
+        const lampBulb = new THREE.Mesh(
+            new THREE.SphereGeometry(0.12, 16, 16),
+            new THREE.MeshBasicMaterial({ color: 0xffd9a0 })
+        );
+        lampBulb.position.copy(lampLight.position);
+        room.add(lampBulb);
+
+        // ---- Chair ----
+        const chair = new THREE.Group();
+        chair.position.set(0, 0, 0.5);
+        room.add(chair);
+        const seat = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.25, 1.6), matDark);
+        seat.position.y = 1.6; seat.castShadow = true;
+        chair.add(seat);
+        const back = new THREE.Mesh(new THREE.BoxGeometry(1.6, 2, 0.2), matDark);
+        back.position.set(0, 2.6, 0.8); back.castShadow = true;
+        chair.add(back);
+        const chairPost = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 1.4), matMetal);
+        chairPost.position.y = 0.8;
+        chair.add(chairPost);
+
+        // ---- Plant ----
+        const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.25, 0.5), new THREE.MeshStandardMaterial({ color: 0x2a3142, roughness: 0.8 }));
+        pot.position.set(3, 2.55, -2.4); pot.castShadow = true;
+        room.add(pot);
+        for (let i = 0; i < 8; i++) {
+            const leaf = new THREE.Mesh(
+                new THREE.ConeGeometry(0.12, 0.9, 6),
+                new THREE.MeshStandardMaterial({ color: 0x16a34a, roughness: 0.7 })
+            );
+            const a = (i / 8) * Math.PI * 2;
+            leaf.position.set(3 + Math.cos(a) * 0.18, 3.1, -2.4 + Math.sin(a) * 0.18);
+            leaf.rotation.set(Math.cos(a) * 0.4, 0, Math.sin(a) * 0.4);
+            room.add(leaf);
+        }
+
+        // ---- Neon strips (brand accent) ----
+        function neonStrip(color, x1, y1, z1, x2, y2, z2) {
+            const points = [new THREE.Vector3(x1, y1, z1), new THREE.Vector3(x2, y2, z2)];
+            const geo = new THREE.BufferGeometry().setFromPoints(points);
+            const mat = new THREE.LineBasicMaterial({ color });
+            const line = new THREE.Line(geo, mat);
+            room.add(line);
+            const light = new THREE.PointLight(color, 1.2, 9);
+            light.position.set((x1 + x2) / 2, (y1 + y2) / 2, (z1 + z2) / 2);
+            room.add(light);
+        }
+        neonStrip(0x0ea5e9, -5.9, 9, -5.9, -5.9, 9, 5.9);   // left wall top
+        neonStrip(0x6366f1, -5.9, 1, -5.9, 5.9, 1, -5.9);   // back wall low
+        neonStrip(0x0ea5e9, -5.9, 11, -5.9, 5.9, 11, -5.9); // back wall top
+
+        // Neon glowing tubes (visible bars)
+        const tubeMatBlue = new THREE.MeshBasicMaterial({ color: 0x0ea5e9 });
+        const tubeMatPurple = new THREE.MeshBasicMaterial({ color: 0x6366f1 });
+        const tube1 = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.08, 11.5), tubeMatBlue);
+        tube1.position.set(-5.92, 9, 0);
+        room.add(tube1);
+        const tube2 = new THREE.Mesh(new THREE.BoxGeometry(11.5, 0.08, 0.08), tubeMatPurple);
+        tube2.position.set(0, 1.2, -5.92);
+        room.add(tube2);
+
+        // ---- Lighting ----
+        scene.add(new THREE.AmbientLight(0x1a2433, 1.2));
+        const keyLight = new THREE.DirectionalLight(0x6688cc, 0.6);
+        keyLight.position.set(5, 10, 5);
+        keyLight.castShadow = true;
+        keyLight.shadow.mapSize.set(1024, 1024);
+        keyLight.shadow.camera.near = 1;
+        keyLight.shadow.camera.far = 30;
+        scene.add(keyLight);
+
+        // ---- Controls ----
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.06;
+        controls.target.set(0, 2.5, -2);
+        controls.minDistance = 5;
+        controls.maxDistance = 13;
+        controls.maxPolarAngle = Math.PI / 2.05;
+        controls.minPolarAngle = Math.PI / 6;
+        controls.enablePan = false;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.5;
+        controls.update();
+
+        // Stop auto-rotate on interaction, resume after idle
+        let idleTimer;
+        controls.addEventListener('start', () => {
+            controls.autoRotate = false;
+            clearTimeout(idleTimer);
+        });
+        controls.addEventListener('end', () => {
+            clearTimeout(idleTimer);
+            idleTimer = setTimeout(() => { controls.autoRotate = true; }, 4000);
+        });
+
+        // ---- Resize ----
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ---- Animate ----
+        let firstFrame = true;
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const t = clock.getElapsedTime();
+
+            // typing animation on screen
+            codeProgress += 0.04;
+            if (codeProgress > codeLines.length + 4) codeProgress = 0;
+            drawScreen();
+
+            // subtle lamp flicker
+            lampLight.intensity = 3 + Math.sin(t * 8) * 0.08;
+
+            controls.update();
+            renderer.render(scene, camera);
+
+            if (firstFrame) {
+                firstFrame = false;
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 700);
+            }
+        }
+        animate();
     </script>
 
 </body>
