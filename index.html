@@ -3,441 +3,676 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>José Luis Palillero — Desarrollo de Software a la Medida</title>
-    <meta name="description" content="Engineer Lead & Arquitecto de Software con más de 15 años de experiencia en desarrollo de software a la medida, soluciones cloud y arquitectura de sistemas.">
+    <title>José Luis Palillero — Engineer Lead</title>
+    <meta name="description" content="Engineer Lead & Arquitecto de Software. +15 años de experiencia en desarrollo de software a la medida, AWS y liderazgo técnico.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        * { font-family: 'Inter', sans-serif; }
+        :root {
+            --accent: #0ea5e9;
+            --accent2: #6366f1;
+            --accent3: #a78bfa;
+            --bg: #050810;
+            --surface: #0c1020;
+            --border: rgba(255,255,255,0.06);
+        }
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
+        body { background: var(--bg); color: #e2e8f0; overflow-x: hidden; cursor: none; }
 
-        /* Animated gradient background */
-        .hero-bg {
-            background: linear-gradient(135deg, #0a0a0f 0%, #0d1b2e 40%, #0a1628 70%, #050d1a 100%);
-            position: relative;
-            overflow: hidden;
+        /* Custom cursor */
+        #cursor {
+            width: 10px; height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed; pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width .15s, height .15s, background .15s, opacity .15s;
+            mix-blend-mode: screen;
         }
-        .hero-bg::before {
-            content: '';
-            position: absolute;
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%);
-            top: -100px; left: -100px;
-            animation: pulse-glow 6s ease-in-out infinite;
+        #cursor-ring {
+            width: 36px; height: 36px;
+            border: 1.5px solid rgba(14,165,233,0.5);
+            border-radius: 50%;
+            position: fixed; pointer-events: none; z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width .3s, height .3s, border-color .3s, transform .08s;
         }
-        .hero-bg::after {
-            content: '';
-            position: absolute;
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%);
-            bottom: -50px; right: 10%;
-            animation: pulse-glow 8s ease-in-out infinite reverse;
-        }
-        @keyframes pulse-glow {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; }
+        body:has(a:hover) #cursor, body:has(button:hover) #cursor { width: 18px; height: 18px; }
+        body:has(a:hover) #cursor-ring, body:has(button:hover) #cursor-ring {
+            width: 52px; height: 52px;
+            border-color: rgba(99,102,241,0.6);
         }
 
-        /* Glass card */
-        .glass {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            backdrop-filter: blur(12px);
-        }
-        .glass-light {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(14,165,233,0.15);
-            backdrop-filter: blur(8px);
+        /* Canvas */
+        #particle-canvas {
+            position: fixed; inset: 0; z-index: 0;
+            width: 100%; height: 100%;
         }
 
-        /* Glow card hover */
-        .glow-card {
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.06);
-            background: #0f1117;
+        /* Nav */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            padding: 20px 40px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(5,8,16,0.6);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
         }
-        .glow-card:hover {
-            border-color: rgba(14,165,233,0.4);
-            box-shadow: 0 0 30px rgba(14,165,233,0.1), 0 20px 40px rgba(0,0,0,0.3);
-            transform: translateY(-4px);
+        .nav-logo {
+            display: flex; align-items: center; gap: 10px;
+            font-weight: 800; font-size: 15px; color: white;
+            text-decoration: none;
+        }
+        .nav-dot {
+            width: 8px; height: 8px; background: var(--accent);
+            border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,100% { box-shadow: 0 0 0 0 rgba(14,165,233,0.6); }
+            50% { box-shadow: 0 0 0 6px rgba(14,165,233,0); }
+        }
+        .nav-links { display: flex; align-items: center; gap: 4px; }
+        .nav-links a {
+            padding: 8px 16px; color: rgba(255,255,255,0.5);
+            text-decoration: none; font-size: 13px; font-weight: 500;
+            border-radius: 10px; transition: all .2s;
+        }
+        .nav-links a:hover { color: white; background: rgba(255,255,255,0.06); }
+        .nav-cta {
+            padding: 9px 20px; background: var(--accent); color: white;
+            border: none; border-radius: 10px; font-size: 13px; font-weight: 600;
+            cursor: none; text-decoration: none; transition: all .2s;
+        }
+        .nav-cta:hover { background: #38bdf8; box-shadow: 0 0 24px rgba(14,165,233,0.4); }
+
+        /* ─── HERO ─── */
+        #hero {
+            position: relative; z-index: 10;
+            min-height: 100vh;
+            display: flex; align-items: center;
+            padding: 120px 40px 80px;
+        }
+        .hero-inner { max-width: 1100px; margin: 0 auto; width: 100%; }
+
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 14px; border-radius: 999px;
+            background: rgba(16,185,129,0.08);
+            border: 1px solid rgba(16,185,129,0.2);
+            color: #34d399; font-size: 12px; font-weight: 600;
+            letter-spacing: .04em; text-transform: uppercase;
+            margin-bottom: 36px;
+        }
+        .status-dot { width: 6px; height: 6px; background: #34d399; border-radius: 50%; animation: pulse-dot 2s infinite; }
+
+        .hero-title {
+            font-size: clamp(52px, 8vw, 96px);
+            font-weight: 900; line-height: 1;
+            letter-spacing: -0.04em; margin-bottom: 24px;
+            color: white;
+        }
+        .hero-title .line2 {
+            display: block;
+            background: linear-gradient(135deg, #7dd3fc 0%, #6366f1 60%, #a78bfa 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 6s ease infinite alternate;
+            background-size: 200% 200%;
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
 
-        /* Gradient text */
-        .gradient-text {
-            background: linear-gradient(135deg, #e0f2fe 0%, #7dd3fc 50%, #38bdf8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* Morphing subtitle */
+        .morph-wrap {
+            font-size: clamp(16px, 2.5vw, 22px);
+            color: rgba(255,255,255,0.5);
+            font-weight: 400; margin-bottom: 20px;
+            height: 32px; overflow: hidden;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .morph-text {
+            color: white; font-weight: 600;
+            animation: morph-cycle 9s steps(1) infinite;
+        }
+        @keyframes morph-cycle {
+            0%,28%  { content: 'Engineer Lead'; }
+            33%,61% { content: 'Arquitecto de Software'; }
+            66%,94% { content: 'AWS Solutions Architect'; }
+            99%,100%{ content: 'Engineer Lead'; }
+        }
+        /* We'll use JS for the morph — CSS animation trick */
+
+        .hero-desc {
+            max-width: 560px; font-size: 16px; line-height: 1.75;
+            color: rgba(255,255,255,0.4); margin-bottom: 44px;
+        }
+        .hero-desc span { color: var(--accent); font-weight: 500; }
+
+        .hero-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 72px; }
+        .btn-primary {
+            padding: 14px 28px; background: var(--accent); color: white;
+            border: none; border-radius: 12px; font-size: 14px; font-weight: 700;
+            cursor: none; text-decoration: none;
+            transition: all .25s;
+            box-shadow: 0 0 0 0 rgba(14,165,233,0.4);
+        }
+        .btn-primary:hover {
+            background: #38bdf8;
+            box-shadow: 0 0 40px rgba(14,165,233,0.35);
+            transform: translateY(-2px);
+        }
+        .btn-ghost {
+            padding: 14px 28px; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+            border-radius: 12px; font-size: 14px; font-weight: 600;
+            cursor: none; text-decoration: none;
+            transition: all .25s;
+        }
+        .btn-ghost:hover {
+            background: rgba(255,255,255,0.08); color: white;
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Stats counter */
+        .hero-stats {
+            display: flex; flex-wrap: wrap; gap: 0;
+            border: 1px solid var(--border); border-radius: 16px;
+            overflow: hidden; background: rgba(12,16,32,0.5);
+            backdrop-filter: blur(12px); width: fit-content;
+        }
+        .stat-item {
+            padding: 20px 32px; border-right: 1px solid var(--border);
+            text-align: center;
+        }
+        .stat-item:last-child { border-right: none; }
+        .stat-num {
+            font-size: 32px; font-weight: 900; color: white;
+            font-variant-numeric: tabular-nums;
+            background: linear-gradient(135deg, white, rgba(255,255,255,0.6));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .gradient-text-purple {
-            background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Timeline */
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -1px;
-            top: 24px;
-            bottom: -24px;
-            width: 1px;
-            background: linear-gradient(to bottom, rgba(14,165,233,0.5), transparent);
-        }
-        .timeline-item:last-child::before { display: none; }
-
-        /* Skill bar */
-        .skill-bar-fill {
-            height: 4px;
-            border-radius: 9999px;
-            background: linear-gradient(90deg, #0ea5e9, #6366f1);
-            animation: fill-bar 1.5s ease-out forwards;
-            width: 0;
-        }
-        @keyframes fill-bar {
-            to { width: var(--target-width); }
-        }
-
-        /* Nav blur */
-        .nav-blur {
-            background: rgba(10,10,15,0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-
-        /* Badge pill */
-        .pill {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-        }
-
-        /* Certification card glow */
-        .cert-card {
-            background: #0f1117;
-            border: 1px solid rgba(255,255,255,0.06);
-            transition: all 0.3s ease;
-        }
-        .cert-card:hover {
-            border-color: rgba(251,146,60,0.4);
-            box-shadow: 0 0 20px rgba(251,146,60,0.08);
-            transform: translateY(-3px);
-        }
-
-        /* Section dark */
-        .section-dark { background: #070a0f; }
-        .section-darker { background: #050810; }
-
-        /* Dot grid background */
-        .dot-grid {
-            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 24px 24px;
-        }
-
-        /* Floating badge animation */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-        .float-1 { animation: float 4s ease-in-out infinite; }
-        .float-2 { animation: float 5s ease-in-out infinite 1s; }
-        .float-3 { animation: float 6s ease-in-out infinite 2s; }
+        .stat-label { font-size: 11px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: .08em; margin-top: 2px; }
 
         /* Scroll indicator */
-        @keyframes bounce-down {
-            0%, 100% { transform: translateY(0); opacity: 0.5; }
-            50% { transform: translateY(6px); opacity: 1; }
+        .scroll-hint {
+            position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            color: rgba(255,255,255,0.2); font-size: 11px; letter-spacing: .1em;
+            text-transform: uppercase;
         }
-        .bounce-down { animation: bounce-down 1.5s ease-in-out infinite; }
+        .scroll-line {
+            width: 1px; height: 40px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            animation: scroll-drop 1.8s ease-in-out infinite;
+        }
+        @keyframes scroll-drop { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
 
-        /* Tag hover */
-        .tag {
-            transition: all 0.2s;
-            cursor: default;
+        /* ─── SECTIONS ─── */
+        section { position: relative; z-index: 10; }
+        .section-inner { max-width: 1100px; margin: 0 auto; padding: 100px 40px; }
+        .section-label {
+            font-size: 11px; font-weight: 700; color: var(--accent);
+            letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px;
         }
-        .tag:hover {
-            background: rgba(14,165,233,0.15);
-            border-color: rgba(14,165,233,0.4);
-            color: #7dd3fc;
+        .section-title {
+            font-size: clamp(28px, 4vw, 44px); font-weight: 900; color: white;
+            letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px;
+        }
+        .section-title span {
+            background: linear-gradient(135deg, #7dd3fc, #6366f1);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-sub { font-size: 15px; color: rgba(255,255,255,0.35); max-width: 520px; line-height: 1.7; margin-bottom: 64px; }
+
+        /* Divider line */
+        .divider { height: 1px; background: linear-gradient(to right, transparent, var(--border) 30%, var(--border) 70%, transparent); }
+
+        /* ─── TILT CARDS ─── */
+        .tilt-card {
+            background: var(--surface);
+            border: 1px solid var(--border); border-radius: 20px;
+            padding: 28px; cursor: none;
+            transition: border-color .3s, box-shadow .3s;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+        .tilt-card:hover {
+            border-color: rgba(14,165,233,0.25);
+            box-shadow: 0 0 0 1px rgba(14,165,233,0.08), 0 24px 48px rgba(0,0,0,0.4);
+        }
+        .tilt-card .card-glow {
+            position: absolute; inset: 0; border-radius: 20px; opacity: 0;
+            background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(14,165,233,0.08) 0%, transparent 60%);
+            transition: opacity .3s; pointer-events: none;
+        }
+        .tilt-card:hover .card-glow { opacity: 1; }
+
+        .icon-box {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
+        }
+        .card-title { font-size: 15px; font-weight: 700; color: white; margin-bottom: 8px; }
+        .card-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.65; }
+
+        /* ─── EXPERIENCE TIMELINE ─── */
+        .exp-timeline { display: flex; flex-direction: column; gap: 0; }
+        .exp-item {
+            display: grid; grid-template-columns: 24px 1fr;
+            gap: 0 24px; padding-bottom: 48px; position: relative;
+        }
+        .exp-item:last-child { padding-bottom: 0; }
+        .exp-spine {
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .exp-dot {
+            width: 12px; height: 12px; border-radius: 50%;
+            border: 2px solid; flex-shrink: 0; margin-top: 6px;
+            position: relative; z-index: 1;
+        }
+        .exp-dot.active { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 12px var(--accent); }
+        .exp-dot.past { background: transparent; border-color: rgba(255,255,255,0.15); }
+        .exp-line {
+            width: 1px; flex: 1; margin-top: 6px;
+            background: linear-gradient(to bottom, rgba(14,165,233,0.3), transparent);
+        }
+        .exp-content {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 24px; position: relative; overflow: hidden;
+            transition: border-color .3s, box-shadow .3s;
+        }
+        .exp-content:hover {
+            border-color: rgba(14,165,233,0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .exp-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+        .exp-company-row { display: flex; align-items: center; gap: 14px; }
+        .exp-avatar {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 13px; flex-shrink: 0;
+        }
+        .exp-role { font-size: 16px; font-weight: 700; color: white; }
+        .exp-company { font-size: 13px; color: var(--accent); font-weight: 500; margin-top: 2px; }
+        .exp-badge {
+            padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600;
+            white-space: nowrap; align-self: flex-start;
+        }
+        .exp-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; }
+
+        /* ─── SKILLS ─── */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+        .skill-group {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 24px;
+        }
+        .skill-group-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 20px; }
+        .skill-row { margin-bottom: 16px; }
+        .skill-row:last-child { margin-bottom: 0; }
+        .skill-info { display: flex; justify-content: space-between; margin-bottom: 7px; }
+        .skill-name { font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 500; }
+        .skill-pct { font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+        .skill-track { height: 3px; background: rgba(255,255,255,0.05); border-radius: 999px; overflow: hidden; }
+        .skill-fill {
+            height: 100%; border-radius: 999px; width: 0;
+            transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+        }
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tech-tag {
+            padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+            border: 1px solid; transition: all .2s; cursor: none;
+        }
+        .tech-tag:hover { transform: translateY(-2px); }
+
+        /* ─── CERTS ─── */
+        .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+        .cert-link {
+            display: flex; align-items: center; gap: 16px;
+            padding: 20px; border-radius: 16px;
+            background: var(--surface); border: 1px solid var(--border);
+            text-decoration: none; transition: all .25s; cursor: none;
+        }
+        .cert-link:hover {
+            border-color: rgba(251,146,60,0.3);
+            box-shadow: 0 0 0 1px rgba(251,146,60,0.1), 0 8px 32px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+        .cert-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 12px; flex-shrink: 0;
+        }
+        .cert-name { font-size: 13px; font-weight: 600; color: white; margin-bottom: 3px; }
+        .cert-issuer { font-size: 11px; color: rgba(255,255,255,0.35); }
+        .cert-arrow { margin-left: auto; color: rgba(255,255,255,0.2); font-size: 16px; transition: all .2s; flex-shrink: 0; }
+        .cert-link:hover .cert-arrow { color: var(--accent); transform: translateX(3px); }
+
+        /* ─── EDUCATION ─── */
+        .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .edu-card {
+            padding: 28px; border-radius: 16px;
+            background: var(--surface); border: 1px solid var(--border);
+            transition: all .25s;
+        }
+        .edu-card:hover { border-color: rgba(99,102,241,0.25); transform: translateY(-3px); }
+        .edu-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+        .edu-degree { font-size: 15px; font-weight: 700; color: white; margin-bottom: 4px; }
+        .edu-school { font-size: 13px; color: var(--accent2); font-weight: 500; }
+        .edu-sub { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 3px; }
+
+        /* ─── CTA ─── */
+        #contacto {
+            position: relative; overflow: hidden;
+            background: var(--bg);
+        }
+        .cta-box {
+            border: 1px solid rgba(14,165,233,0.15);
+            border-radius: 28px; padding: 72px;
+            text-align: center; position: relative; overflow: hidden;
+            background: linear-gradient(135deg, rgba(14,165,233,0.04), rgba(99,102,241,0.04));
+        }
+        .cta-glow {
+            position: absolute; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(14,165,233,0.08) 0%, transparent 65%);
+            top: 50%; left: 50%; transform: translate(-50%,-50%);
+            pointer-events: none;
+        }
+        .cta-title { font-size: clamp(28px, 4vw, 48px); font-weight: 900; color: white; letter-spacing: -0.03em; margin-bottom: 16px; }
+        .cta-title span { background: linear-gradient(135deg, #7dd3fc, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .cta-sub { font-size: 16px; color: rgba(255,255,255,0.4); max-width: 480px; margin: 0 auto 40px; line-height: 1.7; }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border); padding: 28px 40px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: relative; z-index: 10;
+            background: var(--bg);
+        }
+        footer p { font-size: 12px; color: rgba(255,255,255,0.2); }
+
+        /* Reveal animations */
+        .reveal {
+            opacity: 0; transform: translateY(28px);
+            transition: opacity .7s cubic-bezier(0.16,1,0.3,1), transform .7s cubic-bezier(0.16,1,0.3,1);
+        }
+        .reveal.visible { opacity: 1; transform: none; }
+        .reveal-delay-1 { transition-delay: .1s; }
+        .reveal-delay-2 { transition-delay: .2s; }
+        .reveal-delay-3 { transition-delay: .3s; }
+        .reveal-delay-4 { transition-delay: .4s; }
+        .reveal-delay-5 { transition-delay: .5s; }
+
+        /* Mobile nav */
+        @media (max-width: 768px) {
+            nav { padding: 16px 20px; }
+            .nav-links { display: none; }
+            .hero-title { font-size: 48px; }
+            #hero { padding: 100px 20px 60px; }
+            .section-inner { padding: 70px 20px; }
+            .cta-box { padding: 40px 24px; }
+            footer { flex-direction: column; gap: 8px; text-align: center; }
+            body { cursor: auto; }
+            #cursor, #cursor-ring { display: none; }
         }
     </style>
 </head>
-<body class="bg-[#070a0f] text-gray-100 antialiased">
+<body>
 
-    <!-- Nav -->
-    <nav class="fixed top-0 w-full z-50 nav-blur">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-7 h-7 rounded-lg bg-sky-500/20 border border-sky-500/30 flex items-center justify-center">
-                    <span class="text-sky-400 font-bold text-xs">JLP</span>
-                </div>
-                <span class="text-white font-semibold text-sm hidden sm:block">José Luis Palillero</span>
-            </div>
-            <div class="hidden md:flex items-center gap-1 text-sm">
-                <a href="#servicios" class="px-4 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all">Servicios</a>
-                <a href="#experiencia" class="px-4 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all">Experiencia</a>
-                <a href="#habilidades" class="px-4 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all">Habilidades</a>
-                <a href="#certificaciones" class="px-4 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all">Certs</a>
-                <a href="#contacto" class="ml-2 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white font-medium rounded-lg transition-all text-sm">Contacto</a>
-            </div>
+    <!-- Custom cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- Particle canvas background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- ───── NAV ───── -->
+    <nav>
+        <a href="#" class="nav-logo">
+            <div class="nav-dot"></div>
+            JLP
+        </a>
+        <div class="nav-links">
+            <a href="#servicios">Servicios</a>
+            <a href="#experiencia">Experiencia</a>
+            <a href="#habilidades">Habilidades</a>
+            <a href="#certificaciones">Certs</a>
+            <a href="#contacto" class="nav-cta" style="color:white;">Contacto</a>
         </div>
     </nav>
 
-    <!-- Hero 3D -->
-    <section class="relative h-screen w-full overflow-hidden bg-[#070a0f]">
-        <!-- 3D Canvas -->
-        <canvas id="room-canvas" class="absolute inset-0 w-full h-full block"></canvas>
-
-        <!-- Loading overlay -->
-        <div id="loader" class="absolute inset-0 flex items-center justify-center bg-[#070a0f] z-30 transition-opacity duration-700">
-            <div class="flex flex-col items-center gap-4">
-                <div class="w-10 h-10 border-2 border-sky-500/20 border-t-sky-500 rounded-full animate-spin"></div>
-                <p class="text-gray-500 text-xs tracking-widest uppercase">Cargando entorno 3D</p>
+    <!-- ───── HERO ───── -->
+    <section id="hero">
+        <div class="hero-inner">
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                Disponible para proyectos
             </div>
-        </div>
 
-        <!-- Text overlay -->
-        <div class="absolute inset-0 z-20 flex flex-col justify-center px-6 pointer-events-none">
-            <div class="max-w-6xl mx-auto w-full">
-                <div class="max-w-xl pointer-events-auto">
-                    <div class="inline-flex items-center gap-2 pill bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 mb-6 backdrop-blur-sm">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        Disponible para proyectos
-                    </div>
+            <h1 class="hero-title">
+                José Luis<br>
+                <span class="line2">Palillero</span>
+            </h1>
 
-                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] mb-5 tracking-tight"
-                        style="text-shadow: 0 4px 40px rgba(0,0,0,0.8);">
-                        <span class="text-white">José Luis</span><br>
-                        <span class="gradient-text">Palillero</span>
-                    </h1>
+            <div class="morph-wrap">
+                <span style="color:rgba(255,255,255,0.3);">—</span>
+                <span id="morph-text" style="color:white;font-weight:700;font-size:inherit;"></span>
+            </div>
 
-                    <p class="text-lg text-gray-300 mb-3 font-medium" style="text-shadow: 0 2px 20px rgba(0,0,0,0.9);">
-                        Engineer Lead · Arquitecto de Software · AWS Certified
-                    </p>
+            <p class="hero-desc">
+                +15 años construyendo software robusto y escalable.
+                Especialista en <span>desarrollo a la medida</span>,
+                arquitectura cloud y liderazgo de equipos de ingeniería de alto rendimiento.
+            </p>
 
-                    <p class="text-gray-400 text-base leading-relaxed max-w-lg mb-8" style="text-shadow: 0 2px 20px rgba(0,0,0,0.9);">
-                        +15 años construyendo software robusto y escalable.
-                        Especialista en <span class="text-sky-400 font-medium">desarrollo a la medida</span>,
-                        arquitectura cloud y liderazgo de equipos de ingeniería.
-                    </p>
+            <div class="hero-btns">
+                <a href="#servicios" class="btn-primary">Explorar servicios →</a>
+                <a href="https://www.linkedin.com/in/joseluispalillero/" target="_blank" class="btn-ghost">LinkedIn</a>
+            </div>
 
-                    <div class="flex flex-wrap gap-3">
-                        <a href="#servicios"
-                           class="px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-sky-500/25 text-sm">
-                            Ver servicios →
-                        </a>
-                        <a href="https://www.linkedin.com/in/joseluispalillero/" target="_blank"
-                           class="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 font-semibold rounded-xl transition-all text-sm backdrop-blur-sm">
-                            LinkedIn
-                        </a>
-                    </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-num" data-target="15">0</div>
+                    <div class="stat-label">Años exp.</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num" data-target="5">0</div>
+                    <div class="stat-label">Certs AWS</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num" data-target="30">0</div>
+                    <div class="stat-label">Proyectos</div>
                 </div>
             </div>
         </div>
 
-        <!-- Interaction hint -->
-        <div class="absolute bottom-8 right-8 z-20 hidden md:flex items-center gap-2 text-gray-500 text-xs pointer-events-none">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59"/>
-            </svg>
-            <span>Arrastra para explorar la habitación</span>
+        <div class="scroll-hint">
+            scroll
+            <div class="scroll-line"></div>
         </div>
-
-        <!-- Scroll hint -->
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
-            <div class="bounce-down flex flex-col items-center gap-1">
-                <span class="text-xs text-gray-500">scroll</span>
-                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                </svg>
-            </div>
-        </div>
-
-        <!-- Bottom fade into content -->
-        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#070a0f] to-transparent z-10 pointer-events-none"></div>
     </section>
 
-    <!-- Servicios -->
-    <section id="servicios" class="section-dark py-24 px-6">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <p class="text-sky-500 text-sm font-semibold uppercase tracking-widest mb-3">Servicios</p>
-                <h2 class="text-3xl md:text-4xl font-black text-white mb-4">Desarrollo de Software <span class="gradient-text">a la Medida</span></h2>
-                <p class="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">Soluciones tecnológicas diseñadas específicamente para los retos de tu negocio, con más de 15 años de experiencia en producción.</p>
-            </div>
+    <div class="divider"></div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- ───── SERVICIOS ───── -->
+    <section id="servicios" style="background:var(--bg);">
+        <div class="section-inner">
+            <p class="section-label reveal">Servicios</p>
+            <h2 class="section-title reveal reveal-delay-1">Software <span>a la Medida</span></h2>
+            <p class="section-sub reveal reveal-delay-2">Soluciones tecnológicas diseñadas para los retos específicos de tu negocio, con más de 15 años de práctica en producción.</p>
 
-                <div class="glow-card rounded-2xl p-7">
-                    <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center mb-5">
-                        <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-                        </svg>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;">
+
+                <div class="tilt-card reveal reveal-delay-1" style="position:relative;">
+                    <div class="card-glow"></div>
+                    <div class="icon-box" style="background:rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.15);">
+                        <svg width="20" height="20" fill="none" stroke="#0ea5e9" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
                     </div>
-                    <h3 class="text-white font-bold mb-2">Desarrollo Full Stack</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Aplicaciones web y móviles completas, desde el frontend hasta la base de datos, adaptadas a tus procesos de negocio.</p>
+                    <div class="card-title">Desarrollo Full Stack</div>
+                    <div class="card-desc">Aplicaciones web y móviles completas, desde el frontend hasta la base de datos, adaptadas a tus procesos de negocio.</div>
                 </div>
 
-                <div class="glow-card rounded-2xl p-7">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-5">
-                        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                        </svg>
+                <div class="tilt-card reveal reveal-delay-2" style="position:relative;">
+                    <div class="card-glow"></div>
+                    <div class="icon-box" style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.15);">
+                        <svg width="20" height="20" fill="none" stroke="#6366f1" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                     </div>
-                    <h3 class="text-white font-bold mb-2">Arquitectura de Sistemas</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Diseño de arquitecturas escalables, microservicios y sistemas distribuidos que crecen con tu empresa.</p>
+                    <div class="card-title">Arquitectura de Sistemas</div>
+                    <div class="card-desc">Diseño de arquitecturas escalables, microservicios y sistemas distribuidos que crecen con tu empresa.</div>
                 </div>
 
-                <div class="glow-card rounded-2xl p-7">
-                    <div class="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-5">
-                        <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
-                        </svg>
+                <div class="tilt-card reveal reveal-delay-3" style="position:relative;">
+                    <div class="card-glow"></div>
+                    <div class="icon-box" style="background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.15);">
+                        <svg width="20" height="20" fill="none" stroke="#fb923c" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
                     </div>
-                    <h3 class="text-white font-bold mb-2">Cloud & AWS</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Implementación y optimización de infraestructura cloud en AWS. Certificado como Solutions Architect Associate.</p>
+                    <div class="card-title">Cloud & AWS</div>
+                    <div class="card-desc">Implementación y optimización de infraestructura cloud en AWS. Certificado como Solutions Architect Associate.</div>
                 </div>
 
-                <div class="glow-card rounded-2xl p-7">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-5">
-                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582 4 8 4"/>
-                        </svg>
+                <div class="tilt-card reveal reveal-delay-1" style="position:relative;">
+                    <div class="card-glow"></div>
+                    <div class="icon-box" style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.15);">
+                        <svg width="20" height="20" fill="none" stroke="#10b981" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582 4 8 4"/></svg>
                     </div>
-                    <h3 class="text-white font-bold mb-2">Administración de BD</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Diseño, optimización y administración de bases de datos relacionales y no relacionales para alto rendimiento.</p>
+                    <div class="card-title">Administración de BD</div>
+                    <div class="card-desc">Diseño, optimización y administración de bases de datos relacionales y no relacionales para alto rendimiento.</div>
                 </div>
 
-                <div class="glow-card rounded-2xl p-7">
-                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-5">
-                        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
+                <div class="tilt-card reveal reveal-delay-2" style="position:relative;">
+                    <div class="card-glow"></div>
+                    <div class="icon-box" style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.15);">
+                        <svg width="20" height="20" fill="none" stroke="#a78bfa" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     </div>
-                    <h3 class="text-white font-bold mb-2">Liderazgo Técnico</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Dirección y mentoría de equipos de desarrollo. CI/CD, buenas prácticas y cultura de calidad de software.</p>
+                    <div class="card-title">Liderazgo Técnico</div>
+                    <div class="card-desc">Dirección y mentoría de equipos. CI/CD, buenas prácticas y cultura de calidad de software.</div>
                 </div>
 
-                <div class="glow-card rounded-2xl p-7">
-                    <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center mb-5">
-                        <svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
+                <div class="tilt-card reveal reveal-delay-3" style="position:relative;">
+                    <div class="card-glow"></div>
+                    <div class="icon-box" style="background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.15);">
+                        <svg width="20" height="20" fill="none" stroke="#f43f5e" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
-                    <h3 class="text-white font-bold mb-2">Consultoría & QA</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Auditoría de proyectos, mejora de procesos y estrategias de pruebas para garantizar la calidad del software.</p>
+                    <div class="card-title">Consultoría & QA</div>
+                    <div class="card-desc">Auditoría de proyectos, mejora de procesos y estrategias de pruebas para garantizar la calidad del software.</div>
                 </div>
 
             </div>
         </div>
     </section>
 
-    <!-- Experiencia -->
-    <section id="experiencia" class="section-darker py-24 px-6">
-        <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-16">
-                <p class="text-sky-500 text-sm font-semibold uppercase tracking-widest mb-3">Trayectoria</p>
-                <h2 class="text-3xl md:text-4xl font-black text-white">Experiencia <span class="gradient-text">Profesional</span></h2>
-            </div>
+    <div class="divider"></div>
 
-            <div class="relative pl-8 border-l border-white/5">
+    <!-- ───── EXPERIENCIA ───── -->
+    <section id="experiencia" style="background:var(--surface);">
+        <div class="section-inner">
+            <p class="section-label reveal">Trayectoria</p>
+            <h2 class="section-title reveal reveal-delay-1">Experiencia <span>Profesional</span></h2>
+            <p class="section-sub reveal reveal-delay-2">Más de 15 años en empresas de tecnología de alto impacto a lo largo de Latinoamérica.</p>
 
-                <!-- Item 1 -->
-                <div class="relative timeline-item mb-10">
-                    <div class="absolute -left-[41px] w-5 h-5 rounded-full bg-sky-500 border-4 border-[#050810] flex items-center justify-center">
-                        <div class="w-2 h-2 rounded-full bg-white"></div>
+            <div class="exp-timeline">
+
+                <div class="exp-item reveal">
+                    <div class="exp-spine">
+                        <div class="exp-dot active"></div>
+                        <div class="exp-line"></div>
                     </div>
-                    <div class="glow-card rounded-2xl p-6">
-                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-orange-500/15 border border-orange-500/20 flex items-center justify-center font-bold text-orange-400 text-sm flex-shrink-0">R</div>
+                    <div class="exp-content">
+                        <div class="exp-header">
+                            <div class="exp-company-row">
+                                <div class="exp-avatar" style="background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.2);color:#fb923c;">R</div>
                                 <div>
-                                    <h3 class="text-white font-bold">Engineer Lead</h3>
-                                    <p class="text-sky-400 text-sm font-medium">Rappi</p>
+                                    <div class="exp-role">Engineer Lead</div>
+                                    <div class="exp-company">Rappi</div>
                                 </div>
                             </div>
-                            <span class="pill bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 self-start">Nov 2022 — Presente</span>
+                            <span class="exp-badge" style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);color:#34d399;">Nov 2022 — Presente</span>
                         </div>
-                        <p class="text-gray-500 text-sm leading-relaxed">Liderazgo técnico de equipos de ingeniería en una de las principales super-apps de Latinoamérica. Diseño de sistemas distribuidos, definición de arquitecturas y gestión de squads multifuncionales.</p>
+                        <p class="exp-desc">Liderazgo técnico de equipos de ingeniería en una de las principales super-apps de Latinoamérica. Diseño de sistemas distribuidos, definición de arquitecturas y gestión de squads multifuncionales.</p>
                     </div>
                 </div>
 
-                <!-- Item 2 -->
-                <div class="relative timeline-item mb-10">
-                    <div class="absolute -left-[41px] w-5 h-5 rounded-full bg-sky-500/50 border-4 border-[#050810]"></div>
-                    <div class="glow-card rounded-2xl p-6">
-                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-orange-500/15 border border-orange-500/20 flex items-center justify-center font-bold text-orange-400 text-sm flex-shrink-0">R</div>
+                <div class="exp-item reveal reveal-delay-1">
+                    <div class="exp-spine">
+                        <div class="exp-dot past"></div>
+                        <div class="exp-line"></div>
+                    </div>
+                    <div class="exp-content">
+                        <div class="exp-header">
+                            <div class="exp-company-row">
+                                <div class="exp-avatar" style="background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.2);color:#fb923c;">R</div>
                                 <div>
-                                    <h3 class="text-white font-bold">Full Stack Developer</h3>
-                                    <p class="text-sky-400 text-sm font-medium">Rappi</p>
+                                    <div class="exp-role">Full Stack Developer</div>
+                                    <div class="exp-company">Rappi</div>
                                 </div>
                             </div>
-                            <span class="pill bg-sky-500/10 border border-sky-500/20 text-sky-400 self-start">Jun 2021</span>
+                            <span class="exp-badge" style="background:rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.2);color:#7dd3fc;">Jun 2021</span>
                         </div>
-                        <p class="text-gray-500 text-sm leading-relaxed">Desarrollo de funcionalidades críticas en el stack completo. Trabajo en equipo ágil con entregas de alto impacto.</p>
+                        <p class="exp-desc">Desarrollo de funcionalidades críticas en el stack completo. Trabajo en equipo ágil con entregas de alto impacto.</p>
                     </div>
                 </div>
 
-                <!-- Item 3 -->
-                <div class="relative timeline-item mb-10">
-                    <div class="absolute -left-[41px] w-5 h-5 rounded-full bg-purple-500/50 border-4 border-[#050810]"></div>
-                    <div class="glow-card rounded-2xl p-6">
-                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-500/20 flex items-center justify-center font-bold text-purple-400 text-sm flex-shrink-0">F</div>
+                <div class="exp-item reveal reveal-delay-2">
+                    <div class="exp-spine">
+                        <div class="exp-dot past"></div>
+                        <div class="exp-line"></div>
+                    </div>
+                    <div class="exp-content">
+                        <div class="exp-header">
+                            <div class="exp-company-row">
+                                <div class="exp-avatar" style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);color:#a78bfa;">F</div>
                                 <div>
-                                    <h3 class="text-white font-bold">Freelance Fullstack Developer</h3>
-                                    <p class="text-sky-400 text-sm font-medium">Proyectos Independientes</p>
+                                    <div class="exp-role">Freelance Fullstack Developer</div>
+                                    <div class="exp-company">Proyectos Independientes</div>
                                 </div>
                             </div>
-                            <span class="pill bg-purple-500/10 border border-purple-500/20 text-purple-400 self-start">2009 — Presente</span>
+                            <span class="exp-badge" style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);color:#c4b5fd;">2009 — Presente</span>
                         </div>
-                        <p class="text-gray-500 text-sm leading-relaxed">Desarrollo de software a la medida para múltiples clientes. Proyectos en sectores financiero, deportivo, salud y gobierno.</p>
+                        <p class="exp-desc">Desarrollo de software a la medida para múltiples clientes en sectores financiero, deportivo, salud y gobierno.</p>
                     </div>
                 </div>
 
-                <!-- Item 4 -->
-                <div class="relative timeline-item mb-10">
-                    <div class="absolute -left-[41px] w-5 h-5 rounded-full bg-emerald-500/50 border-4 border-[#050810]"></div>
-                    <div class="glow-card rounded-2xl p-6">
-                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center font-bold text-emerald-400 text-xs flex-shrink-0">RP</div>
+                <div class="exp-item reveal reveal-delay-3">
+                    <div class="exp-spine">
+                        <div class="exp-dot past"></div>
+                        <div class="exp-line"></div>
+                    </div>
+                    <div class="exp-content">
+                        <div class="exp-header">
+                            <div class="exp-company-row">
+                                <div class="exp-avatar" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#34d399;font-size:11px;">RP</div>
                                 <div>
-                                    <h3 class="text-white font-bold">Líder Técnico</h3>
-                                    <p class="text-sky-400 text-sm font-medium">RefereePRO</p>
+                                    <div class="exp-role">Líder Técnico</div>
+                                    <div class="exp-company">RefereePRO</div>
                                 </div>
                             </div>
-                            <span class="pill bg-gray-500/10 border border-gray-500/20 text-gray-400 self-start">Oct 2016</span>
+                            <span class="exp-badge" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.35);">Oct 2016</span>
                         </div>
-                        <p class="text-gray-500 text-sm leading-relaxed">Liderazgo del equipo de desarrollo de una plataforma deportiva. Definición de arquitectura y toma de decisiones técnicas.</p>
+                        <p class="exp-desc">Liderazgo del equipo de desarrollo de una plataforma deportiva. Definición de arquitectura y toma de decisiones técnicas.</p>
                     </div>
                 </div>
 
-                <!-- Item 5 -->
-                <div class="relative mb-10">
-                    <div class="absolute -left-[41px] w-5 h-5 rounded-full bg-red-500/50 border-4 border-[#050810]"></div>
-                    <div class="glow-card rounded-2xl p-6">
-                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-red-500/15 border border-red-500/20 flex items-center justify-center font-bold text-red-400 text-xs flex-shrink-0">BA</div>
+                <div class="exp-item reveal reveal-delay-4">
+                    <div class="exp-spine">
+                        <div class="exp-dot past"></div>
+                    </div>
+                    <div class="exp-content">
+                        <div class="exp-header">
+                            <div class="exp-company-row">
+                                <div class="exp-avatar" style="background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.2);color:#f43f5e;font-size:11px;">BA</div>
                                 <div>
-                                    <h3 class="text-white font-bold">Líder Técnico</h3>
-                                    <p class="text-sky-400 text-sm font-medium">Banco Azteca</p>
+                                    <div class="exp-role">Líder Técnico</div>
+                                    <div class="exp-company">Banco Azteca</div>
                                 </div>
                             </div>
-                            <span class="pill bg-gray-500/10 border border-gray-500/20 text-gray-400 self-start">2007 — 2008</span>
+                            <span class="exp-badge" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.35);">2007 — 2008</span>
                         </div>
-                        <p class="text-gray-500 text-sm leading-relaxed">Liderazgo en proyectos financieros críticos. Migración de portal financiero y sistemas de tesorería con tecnología Java.</p>
+                        <p class="exp-desc">Liderazgo en proyectos financieros críticos. Migración de portal financiero y sistemas de tesorería con Java.</p>
                     </div>
                 </div>
 
@@ -445,117 +680,94 @@
         </div>
     </section>
 
-    <!-- Habilidades -->
-    <section id="habilidades" class="section-dark py-24 px-6">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <p class="text-sky-500 text-sm font-semibold uppercase tracking-widest mb-3">Stack Técnico</p>
-                <h2 class="text-3xl md:text-4xl font-black text-white">Habilidades & <span class="gradient-text">Tecnologías</span></h2>
-            </div>
+    <div class="divider"></div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- ───── HABILIDADES ───── -->
+    <section id="habilidades" style="background:var(--bg);">
+        <div class="section-inner">
+            <p class="section-label reveal">Stack Técnico</p>
+            <h2 class="section-title reveal reveal-delay-1">Habilidades & <span>Tecnologías</span></h2>
+            <p class="section-sub reveal reveal-delay-2">Stack construido en más de 15 años de práctica en producción.</p>
 
-                <!-- Arquitectura -->
-                <div class="glow-card rounded-2xl p-7">
-                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-5">Arquitectura & Backend</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="text-gray-300">Arquitectura de Sistemas</span>
-                                <span class="text-sky-400">95%</span>
-                            </div>
-                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
-                                <div class="skill-bar-fill" style="--target-width: 95%"></div>
-                            </div>
+            <div class="skills-grid">
+
+                <div class="skill-group reveal">
+                    <div class="skill-group-label">Arquitectura & Backend</div>
+                    <div class="skill-row">
+                        <div class="skill-info">
+                            <span class="skill-name">Arquitectura de Sistemas</span>
+                            <span class="skill-pct" style="color:#7dd3fc;">95%</span>
                         </div>
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="text-gray-300">Microservicios / APIs REST</span>
-                                <span class="text-sky-400">92%</span>
-                            </div>
-                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
-                                <div class="skill-bar-fill" style="--target-width: 92%"></div>
-                            </div>
+                        <div class="skill-track"><div class="skill-fill" data-w="95%" style="background:linear-gradient(90deg,#0ea5e9,#6366f1);"></div></div>
+                    </div>
+                    <div class="skill-row">
+                        <div class="skill-info">
+                            <span class="skill-name">Microservicios / APIs</span>
+                            <span class="skill-pct" style="color:#7dd3fc;">92%</span>
                         </div>
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="text-gray-300">Java</span>
-                                <span class="text-sky-400">90%</span>
-                            </div>
-                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
-                                <div class="skill-bar-fill" style="--target-width: 90%"></div>
-                            </div>
+                        <div class="skill-track"><div class="skill-fill" data-w="92%" style="background:linear-gradient(90deg,#0ea5e9,#6366f1);"></div></div>
+                    </div>
+                    <div class="skill-row">
+                        <div class="skill-info">
+                            <span class="skill-name">Java</span>
+                            <span class="skill-pct" style="color:#7dd3fc;">90%</span>
                         </div>
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="text-gray-300">Node.js</span>
-                                <span class="text-sky-400">85%</span>
-                            </div>
-                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
-                                <div class="skill-bar-fill" style="--target-width: 85%"></div>
-                            </div>
+                        <div class="skill-track"><div class="skill-fill" data-w="90%" style="background:linear-gradient(90deg,#0ea5e9,#6366f1);"></div></div>
+                    </div>
+                    <div class="skill-row">
+                        <div class="skill-info">
+                            <span class="skill-name">Node.js</span>
+                            <span class="skill-pct" style="color:#7dd3fc;">85%</span>
                         </div>
+                        <div class="skill-track"><div class="skill-fill" data-w="85%" style="background:linear-gradient(90deg,#0ea5e9,#6366f1);"></div></div>
                     </div>
                 </div>
 
-                <!-- Frontend -->
-                <div class="glow-card rounded-2xl p-7">
-                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-5">Frontend</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="text-gray-300">Angular</span>
-                                <span class="text-purple-400">88%</span>
-                            </div>
-                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
-                                <div class="skill-bar-fill" style="--target-width: 88%; background: linear-gradient(90deg, #a78bfa, #7c3aed)"></div>
-                            </div>
+                <div class="skill-group reveal reveal-delay-1">
+                    <div class="skill-group-label">Frontend</div>
+                    <div class="skill-row">
+                        <div class="skill-info">
+                            <span class="skill-name">Angular</span>
+                            <span class="skill-pct" style="color:#a78bfa;">88%</span>
                         </div>
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="text-gray-300">TypeScript / JavaScript</span>
-                                <span class="text-purple-400">85%</span>
-                            </div>
-                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
-                                <div class="skill-bar-fill" style="--target-width: 85%; background: linear-gradient(90deg, #a78bfa, #7c3aed)"></div>
-                            </div>
+                        <div class="skill-track"><div class="skill-fill" data-w="88%" style="background:linear-gradient(90deg,#a78bfa,#7c3aed);"></div></div>
+                    </div>
+                    <div class="skill-row">
+                        <div class="skill-info">
+                            <span class="skill-name">TypeScript / JS</span>
+                            <span class="skill-pct" style="color:#a78bfa;">85%</span>
                         </div>
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="text-gray-300">HTML5 / CSS3</span>
-                                <span class="text-purple-400">90%</span>
-                            </div>
-                            <div class="h-1 bg-white/5 rounded-full overflow-hidden">
-                                <div class="skill-bar-fill" style="--target-width: 90%; background: linear-gradient(90deg, #a78bfa, #7c3aed)"></div>
-                            </div>
+                        <div class="skill-track"><div class="skill-fill" data-w="85%" style="background:linear-gradient(90deg,#a78bfa,#7c3aed);"></div></div>
+                    </div>
+                    <div class="skill-row">
+                        <div class="skill-info">
+                            <span class="skill-name">HTML5 / CSS3</span>
+                            <span class="skill-pct" style="color:#a78bfa;">90%</span>
                         </div>
+                        <div class="skill-track"><div class="skill-fill" data-w="90%" style="background:linear-gradient(90deg,#a78bfa,#7c3aed);"></div></div>
                     </div>
                 </div>
 
-                <!-- Cloud -->
-                <div class="glow-card rounded-2xl p-7">
-                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-5">Cloud & DevOps</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="tag pill bg-orange-500/10 border border-orange-500/15 text-orange-300">AWS</span>
-                        <span class="tag pill bg-orange-500/10 border border-orange-500/15 text-orange-300">Solutions Architect</span>
-                        <span class="tag pill bg-orange-500/10 border border-orange-500/15 text-orange-300">Well-Architected</span>
-                        <span class="tag pill bg-orange-500/10 border border-orange-500/15 text-orange-300">Cloud Economics</span>
-                        <span class="tag pill bg-sky-500/10 border border-sky-500/15 text-sky-300">CI/CD</span>
-                        <span class="tag pill bg-sky-500/10 border border-sky-500/15 text-sky-300">Sistemas Distribuidos</span>
-                        <span class="tag pill bg-sky-500/10 border border-sky-500/15 text-sky-300">DevOps</span>
+                <div class="skill-group reveal reveal-delay-2">
+                    <div class="skill-group-label">Cloud & DevOps</div>
+                    <div class="tag-cloud">
+                        <span class="tech-tag" style="background:rgba(251,146,60,0.06);border-color:rgba(251,146,60,0.15);color:#fb923c;">AWS</span>
+                        <span class="tech-tag" style="background:rgba(251,146,60,0.06);border-color:rgba(251,146,60,0.15);color:#fb923c;">Solutions Architect</span>
+                        <span class="tech-tag" style="background:rgba(251,146,60,0.06);border-color:rgba(251,146,60,0.15);color:#fb923c;">Well-Architected</span>
+                        <span class="tech-tag" style="background:rgba(14,165,233,0.06);border-color:rgba(14,165,233,0.15);color:#7dd3fc;">CI/CD</span>
+                        <span class="tech-tag" style="background:rgba(14,165,233,0.06);border-color:rgba(14,165,233,0.15);color:#7dd3fc;">DevOps</span>
+                        <span class="tech-tag" style="background:rgba(14,165,233,0.06);border-color:rgba(14,165,233,0.15);color:#7dd3fc;">Sistemas Distribuidos</span>
                     </div>
                 </div>
 
-                <!-- Datos -->
-                <div class="glow-card rounded-2xl p-7">
-                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-5">Datos & Calidad</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="tag pill bg-emerald-500/10 border border-emerald-500/15 text-emerald-300">Administración de BD</span>
-                        <span class="tag pill bg-emerald-500/10 border border-emerald-500/15 text-emerald-300">DB2</span>
-                        <span class="tag pill bg-emerald-500/10 border border-emerald-500/15 text-emerald-300">SQL</span>
-                        <span class="tag pill bg-emerald-500/10 border border-emerald-500/15 text-emerald-300">Pruebas de Software</span>
-                        <span class="tag pill bg-emerald-500/10 border border-emerald-500/15 text-emerald-300">Depuración</span>
-                        <span class="tag pill bg-emerald-500/10 border border-emerald-500/15 text-emerald-300">Solución de Problemas</span>
+                <div class="skill-group reveal reveal-delay-3">
+                    <div class="skill-group-label">Datos & Calidad</div>
+                    <div class="tag-cloud">
+                        <span class="tech-tag" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.15);color:#34d399;">Administración BD</span>
+                        <span class="tech-tag" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.15);color:#34d399;">DB2</span>
+                        <span class="tech-tag" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.15);color:#34d399;">SQL</span>
+                        <span class="tech-tag" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.15);color:#34d399;">Pruebas de Software</span>
+                        <span class="tech-tag" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.15);color:#34d399;">QA</span>
                     </div>
                 </div>
 
@@ -563,484 +775,277 @@
         </div>
     </section>
 
-    <!-- Certificaciones -->
-    <section id="certificaciones" class="section-darker py-24 px-6">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <p class="text-sky-500 text-sm font-semibold uppercase tracking-widest mb-3">Credenciales</p>
-                <h2 class="text-3xl md:text-4xl font-black text-white"><span class="gradient-text">Certificaciones</span></h2>
-                <p class="text-gray-500 mt-3 text-sm">Credenciales verificadas que validan la experiencia técnica</p>
-            </div>
+    <div class="divider"></div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- ───── CERTIFICACIONES ───── -->
+    <section id="certificaciones" style="background:var(--surface);">
+        <div class="section-inner">
+            <p class="section-label reveal">Credenciales</p>
+            <h2 class="section-title reveal reveal-delay-1"><span>Certificaciones</span></h2>
+            <p class="section-sub reveal reveal-delay-2">Credenciales verificadas que validan la experiencia técnica.</p>
 
-                <a href="https://www.credly.com/badges/63cf7847-6ed7-49f5-911d-f468764b9812/linked_in_profile" target="_blank" class="cert-card rounded-2xl p-6 flex items-start gap-4 group">
-                    <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/15 transition-all">
-                        <span class="text-orange-400 font-extrabold text-xs">AWS</span>
-                    </div>
-                    <div>
-                        <h3 class="text-white font-semibold text-sm mb-1">AWS Certified Solutions Architect</h3>
-                        <p class="text-gray-600 text-xs mb-2">Associate · Amazon Web Services</p>
-                        <span class="text-sky-500 text-xs font-medium group-hover:text-sky-400 transition-colors">Ver credencial →</span>
-                    </div>
+            <div class="certs-grid">
+                <a href="https://www.credly.com/badges/63cf7847-6ed7-49f5-911d-f468764b9812/linked_in_profile" target="_blank" class="cert-link reveal">
+                    <div class="cert-icon" style="background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.2);color:#fb923c;">AWS</div>
+                    <div><div class="cert-name">AWS Certified Solutions Architect</div><div class="cert-issuer">Associate · Amazon Web Services</div></div>
+                    <span class="cert-arrow">→</span>
                 </a>
-
-                <a href="https://www.credly.com/badges/504afcfd-ed01-4fcb-a9b5-be31d02b1f84/linked_in_profile" target="_blank" class="cert-card rounded-2xl p-6 flex items-start gap-4 group">
-                    <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/15 transition-all">
-                        <span class="text-orange-400 font-extrabold text-xs">AWS</span>
-                    </div>
-                    <div>
-                        <h3 class="text-white font-semibold text-sm mb-1">Well-Architected Proficient</h3>
-                        <p class="text-gray-600 text-xs mb-2">Amazon Web Services</p>
-                        <span class="text-sky-500 text-xs font-medium group-hover:text-sky-400 transition-colors">Ver credencial →</span>
-                    </div>
+                <a href="https://www.credly.com/badges/504afcfd-ed01-4fcb-a9b5-be31d02b1f84/linked_in_profile" target="_blank" class="cert-link reveal reveal-delay-1">
+                    <div class="cert-icon" style="background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.2);color:#fb923c;">AWS</div>
+                    <div><div class="cert-name">Well-Architected Proficient</div><div class="cert-issuer">Amazon Web Services</div></div>
+                    <span class="cert-arrow">→</span>
                 </a>
-
-                <a href="https://www.credly.com/badges/7f543a0a-3912-42e0-97b1-dd6e94f72280/linked_in_profile" target="_blank" class="cert-card rounded-2xl p-6 flex items-start gap-4 group">
-                    <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/15 transition-all">
-                        <span class="text-orange-400 font-extrabold text-xs">AWS</span>
-                    </div>
-                    <div>
-                        <h3 class="text-white font-semibold text-sm mb-1">AWS Cloud Economics Accreditation</h3>
-                        <p class="text-gray-600 text-xs mb-2">Amazon Web Services</p>
-                        <span class="text-sky-500 text-xs font-medium group-hover:text-sky-400 transition-colors">Ver credencial →</span>
-                    </div>
+                <a href="https://www.credly.com/badges/7f543a0a-3912-42e0-97b1-dd6e94f72280/linked_in_profile" target="_blank" class="cert-link reveal reveal-delay-2">
+                    <div class="cert-icon" style="background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.2);color:#fb923c;">AWS</div>
+                    <div><div class="cert-name">AWS Cloud Economics Accreditation</div><div class="cert-issuer">Amazon Web Services</div></div>
+                    <span class="cert-arrow">→</span>
                 </a>
-
-                <a href="https://www.credly.com/badges/befb2956-5725-470d-bb26-3f2a2b9b5d3b/linked_in_profile" target="_blank" class="cert-card rounded-2xl p-6 flex items-start gap-4 group">
-                    <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/15 transition-all">
-                        <span class="text-orange-400 font-extrabold text-xs">AWS</span>
-                    </div>
-                    <div>
-                        <h3 class="text-white font-semibold text-sm mb-1">AWS Partner: Accreditation Technical</h3>
-                        <p class="text-gray-600 text-xs mb-2">Amazon Web Services</p>
-                        <span class="text-sky-500 text-xs font-medium group-hover:text-sky-400 transition-colors">Ver credencial →</span>
-                    </div>
+                <a href="https://www.credly.com/badges/befb2956-5725-470d-bb26-3f2a2b9b5d3b/linked_in_profile" target="_blank" class="cert-link reveal reveal-delay-3">
+                    <div class="cert-icon" style="background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.2);color:#fb923c;">AWS</div>
+                    <div><div class="cert-name">AWS Partner: Technical Accreditation</div><div class="cert-issuer">Amazon Web Services</div></div>
+                    <span class="cert-arrow">→</span>
                 </a>
-
-                <a href="https://www.hackerrank.com/certificates/8dea692ed5e1" target="_blank" class="cert-card rounded-2xl p-6 flex items-start gap-4 group" style="border-color: rgba(255,255,255,0.06);">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-500/15 transition-all">
-                        <span class="text-emerald-400 font-extrabold text-xs">HR</span>
-                    </div>
-                    <div>
-                        <h3 class="text-white font-semibold text-sm mb-1">Angular Intermediate Certificate</h3>
-                        <p class="text-gray-600 text-xs mb-2">HackerRank</p>
-                        <span class="text-sky-500 text-xs font-medium group-hover:text-sky-400 transition-colors">Ver credencial →</span>
-                    </div>
+                <a href="https://www.hackerrank.com/certificates/8dea692ed5e1" target="_blank" class="cert-link reveal reveal-delay-4">
+                    <div class="cert-icon" style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);color:#34d399;font-size:11px;">HR</div>
+                    <div><div class="cert-name">Angular Intermediate Certificate</div><div class="cert-issuer">HackerRank</div></div>
+                    <span class="cert-arrow">→</span>
                 </a>
-
             </div>
         </div>
     </section>
 
-    <!-- Educación -->
-    <section class="section-dark py-24 px-6">
-        <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-16">
-                <p class="text-sky-500 text-sm font-semibold uppercase tracking-widest mb-3">Formación</p>
-                <h2 class="text-3xl md:text-4xl font-black text-white"><span class="gradient-text">Educación</span></h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="glow-card rounded-2xl p-7 flex items-start gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
-                        </svg>
+    <div class="divider"></div>
+
+    <!-- ───── EDUCACIÓN ───── -->
+    <section style="background:var(--bg);">
+        <div class="section-inner">
+            <p class="section-label reveal">Formación</p>
+            <h2 class="section-title reveal reveal-delay-1"><span>Educación</span></h2>
+
+            <div class="edu-grid">
+                <div class="edu-card reveal reveal-delay-1">
+                    <div class="edu-icon" style="background:rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.15);">
+                        <svg width="20" height="20" fill="none" stroke="#0ea5e9" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422A12.083 12.083 0 0118.84 16.6 11.952 11.952 0 0112 20.055a11.952 11.952 0 00-6.824-2.998A12.078 12.078 0 015.176 10.6L12 14z"/></svg>
                     </div>
-                    <div>
-                        <h3 class="text-white font-bold mb-1">Postgrado</h3>
-                        <p class="text-sky-400 text-sm font-medium">OBS Business School</p>
-                        <p class="text-gray-600 text-xs mt-1">Universidad de Barcelona</p>
-                    </div>
+                    <div class="edu-degree">Postgrado</div>
+                    <div class="edu-school">OBS Business School</div>
+                    <div class="edu-sub">Universidad de Barcelona</div>
                 </div>
-                <div class="glow-card rounded-2xl p-7 flex items-start gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
-                        </svg>
+                <div class="edu-card reveal reveal-delay-2">
+                    <div class="edu-icon" style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.15);">
+                        <svg width="20" height="20" fill="none" stroke="#6366f1" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422A12.083 12.083 0 0118.84 16.6 11.952 11.952 0 0112 20.055a11.952 11.952 0 00-6.824-2.998A12.078 12.078 0 015.176 10.6L12 14z"/></svg>
                     </div>
-                    <div>
-                        <h3 class="text-white font-bold mb-1">Lic. Ingeniería en Computación</h3>
-                        <p class="text-indigo-400 text-sm font-medium">Univ. Autónoma de Tlaxcala</p>
-                        <p class="text-gray-600 text-xs mt-1">Engineering degree</p>
-                    </div>
+                    <div class="edu-degree">Lic. Ingeniería en Computación</div>
+                    <div class="edu-school" style="color:#818cf8;">Univ. Autónoma de Tlaxcala</div>
+                    <div class="edu-sub">Engineering Degree</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA -->
-    <section id="contacto" class="section-darker py-24 px-6">
-        <div class="max-w-3xl mx-auto text-center">
-            <div class="glass rounded-3xl p-12 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-sky-500/5 to-indigo-500/5"></div>
-                <div class="relative z-10">
-                    <div class="inline-flex items-center gap-2 pill bg-sky-500/10 border border-sky-500/20 text-sky-400 mb-6">
-                        <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
+    <div class="divider"></div>
+
+    <!-- ───── CTA ───── -->
+    <section id="contacto" style="background:var(--bg);">
+        <div class="section-inner">
+            <div class="cta-box reveal">
+                <div class="cta-glow"></div>
+                <div style="position:relative;z-index:1;">
+                    <div class="status-badge" style="margin-bottom:28px;">
+                        <span class="status-dot"></span>
                         Disponible para nuevos proyectos
                     </div>
-                    <h2 class="text-3xl md:text-4xl font-black text-white mb-4">¿Tienes un proyecto <span class="gradient-text">en mente?</span></h2>
-                    <p class="text-gray-400 text-base leading-relaxed mb-8 max-w-xl mx-auto">
-                        Con más de 15 años de experiencia construyendo software, puedo ayudarte a convertir tu idea en una solución robusta y escalable, a la medida de tu negocio.
-                    </p>
-                    <a href="https://www.linkedin.com/in/joseluispalillero/" target="_blank"
-                       class="inline-flex items-center gap-2 px-8 py-4 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-all hover:shadow-xl hover:shadow-sky-500/25 text-sm">
+                    <h2 class="cta-title">¿Tienes un proyecto <span>en mente?</span></h2>
+                    <p class="cta-sub">Con más de 15 años de experiencia, puedo ayudarte a convertir tu idea en una solución robusta, escalable y a la medida de tu negocio.</p>
+                    <a href="https://www.linkedin.com/in/joseluispalillero/" target="_blank" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;">
                         Hablemos en LinkedIn
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                        </svg>
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-[#030508] border-t border-white/5 py-8 px-6 text-center">
-        <p class="text-gray-600 text-sm">© 2026 José Luis Palillero · Engineer Lead · Desarrollo de Software a la Medida</p>
+    <!-- ───── FOOTER ───── -->
+    <footer>
+        <p>© 2026 José Luis Palillero · Engineer Lead · Desarrollo de Software a la Medida</p>
+        <p style="font-family:'JetBrains Mono',monospace;">joseluispalillero@gmail.com</p>
     </footer>
 
+    <!-- ───── SCRIPTS ───── -->
     <script>
-        // Animate skill bars on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
-                        bar.style.width = bar.style.getPropertyValue('--target-width');
-                    });
-                }
-            });
-        }, { threshold: 0.3 });
-        document.querySelectorAll('.glow-card').forEach(el => observer.observe(el));
-    </script>
+    // ── Custom cursor ──
+    const cur = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let cx = 0, cy = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+        cx = e.clientX; cy = e.clientY;
+        cur.style.left = cx + 'px'; cur.style.top = cy + 'px';
+    });
+    function animRing() {
+        rx += (cx - rx) * 0.1; ry += (cy - ry) * 0.1;
+        ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+        requestAnimationFrame(animRing);
+    }
+    animRing();
 
-    <!-- Three.js 3D interactive room -->
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    // ── Particle canvas ──
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [], mouse = { x: -9999, y: -9999 };
+    const PARTICLE_COUNT = window.innerWidth > 768 ? 120 : 50;
+
+    function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+    class Particle {
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * W;
+            this.y = Math.random() * H;
+            this.ox = this.x; this.oy = this.y;
+            this.vx = (Math.random() - 0.5) * 0.3;
+            this.vy = (Math.random() - 0.5) * 0.3;
+            this.size = Math.random() * 1.5 + 0.5;
+            this.alpha = Math.random() * 0.5 + 0.1;
+            const hues = [200, 220, 250, 270];
+            this.hue = hues[Math.floor(Math.random() * hues.length)];
+        }
+        update() {
+            const dx = mouse.x - this.x;
+            const dy = mouse.y - this.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const force = Math.max(0, 120 - dist) / 120;
+            if (dist < 120) {
+                this.vx -= (dx / dist) * force * 0.6;
+                this.vy -= (dy / dist) * force * 0.6;
+            }
+            // spring back to origin
+            this.vx += (this.ox - this.x) * 0.004;
+            this.vy += (this.oy - this.y) * 0.004;
+            this.vx *= 0.92; this.vy *= 0.92;
+            this.x += this.vx; this.y += this.vy;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = `hsla(${this.hue}, 80%, 70%, ${this.alpha})`;
+            ctx.fill();
         }
     }
-    </script>
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-        const canvas = document.getElementById('room-canvas');
-        const loader = document.getElementById('loader');
+    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
 
-        // Respect reduced motion / very small screens: still render but lighter
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color('#070a0f');
-        scene.fog = new THREE.Fog('#070a0f', 12, 26);
-
-        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
-        camera.position.set(6.5, 4.2, 7.5);
-
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-        // ---- Materials ----
-        const matFloor = new THREE.MeshStandardMaterial({ color: 0x0a0e16, roughness: 0.85, metalness: 0.1 });
-        const matWall  = new THREE.MeshStandardMaterial({ color: 0x0d1320, roughness: 0.95 });
-        const matDesk  = new THREE.MeshStandardMaterial({ color: 0x161b28, roughness: 0.6, metalness: 0.3 });
-        const matMetal = new THREE.MeshStandardMaterial({ color: 0x2a3142, roughness: 0.4, metalness: 0.7 });
-        const matDark  = new THREE.MeshStandardMaterial({ color: 0x0a0d14, roughness: 0.5, metalness: 0.5 });
-
-        // ---- Room ----
-        const room = new THREE.Group();
-        scene.add(room);
-
-        // Floor
-        const floor = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), matFloor);
-        floor.rotation.x = -Math.PI / 2;
-        floor.receiveShadow = true;
-        room.add(floor);
-
-        // Back wall
-        const backWall = new THREE.Mesh(new THREE.PlaneGeometry(20, 12), matWall);
-        backWall.position.set(0, 6, -6);
-        backWall.receiveShadow = true;
-        room.add(backWall);
-
-        // Left wall
-        const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(20, 12), matWall);
-        leftWall.rotation.y = Math.PI / 2;
-        leftWall.position.set(-6, 6, 0);
-        leftWall.receiveShadow = true;
-        room.add(leftWall);
-
-        // Window with city glow on back wall
-        const windowGlow = new THREE.Mesh(
-            new THREE.PlaneGeometry(5, 4),
-            new THREE.MeshBasicMaterial({ color: 0x0ea5e9, transparent: true, opacity: 0.12 })
-        );
-        windowGlow.position.set(2.5, 6.5, -5.95);
-        room.add(windowGlow);
-        const windowFrame = new THREE.Mesh(
-            new THREE.PlaneGeometry(5.3, 4.3),
-            new THREE.MeshStandardMaterial({ color: 0x1a2030, roughness: 0.6 })
-        );
-        windowFrame.position.set(2.5, 6.5, -5.97);
-        room.add(windowFrame);
-        // City dots in the window
-        for (let i = 0; i < 40; i++) {
-            const dot = new THREE.Mesh(
-                new THREE.PlaneGeometry(0.06, 0.06),
-                new THREE.MeshBasicMaterial({ color: Math.random() > 0.5 ? 0x7dd3fc : 0xfbbf24 })
-            );
-            dot.position.set(0.6 + Math.random() * 3.8, 5 + Math.random() * 2.6, -5.94);
-            room.add(dot);
+    // Connection lines between nearby particles
+    function drawConnections() {
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 100) {
+                    const alpha = (1 - dist / 100) * 0.12;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(99,102,241,${alpha})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            }
         }
+    }
 
-        // ---- Desk ----
-        const desk = new THREE.Group();
-        desk.position.set(0, 0, -2);
-        room.add(desk);
+    function loop() {
+        ctx.clearRect(0, 0, W, H);
+        drawConnections();
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(loop);
+    }
+    loop();
 
-        const deskTop = new THREE.Mesh(new THREE.BoxGeometry(7, 0.18, 3), matDesk);
-        deskTop.position.y = 2.3;
-        deskTop.castShadow = true; deskTop.receiveShadow = true;
-        desk.add(deskTop);
+    // ── Morph text ──
+    const morphRoles = ['Engineer Lead', 'Arquitecto de Software', 'AWS Solutions Architect', 'Full Stack Developer', 'Tech Lead'];
+    let morphIdx = 0;
+    const morphEl = document.getElementById('morph-text');
+    function morphText() {
+        morphEl.style.opacity = '0';
+        morphEl.style.transform = 'translateY(12px)';
+        setTimeout(() => {
+            morphIdx = (morphIdx + 1) % morphRoles.length;
+            morphEl.textContent = morphRoles[morphIdx];
+            morphEl.style.transition = 'opacity .4s, transform .4s';
+            morphEl.style.opacity = '1';
+            morphEl.style.transform = 'translateY(0)';
+        }, 300);
+    }
+    morphEl.textContent = morphRoles[0];
+    morphEl.style.transition = 'opacity .4s, transform .4s';
+    setInterval(morphText, 2800);
 
-        [[-3.2, -1.2], [3.2, -1.2], [-3.2, 1.2], [3.2, 1.2]].forEach(([x, z]) => {
-            const leg = new THREE.Mesh(new THREE.BoxGeometry(0.18, 2.3, 0.18), matMetal);
-            leg.position.set(x, 1.15, z);
-            leg.castShadow = true;
-            desk.add(leg);
+    // ── Counter animation ──
+    const counters = document.querySelectorAll('[data-target]');
+    const counterObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            const el = e.target;
+            const target = parseInt(el.dataset.target);
+            let current = 0;
+            const step = target / 40;
+            const timer = setInterval(() => {
+                current = Math.min(current + step, target);
+                el.textContent = Math.round(current) + '+';
+                if (current >= target) clearInterval(timer);
+            }, 35);
+            counterObs.unobserve(el);
         });
+    }, { threshold: 0.5 });
+    counters.forEach(c => counterObs.observe(c));
 
-        // ---- Monitor with animated code screen ----
-        const monitor = new THREE.Group();
-        monitor.position.set(0, 2.4, -2.6);
-        room.add(monitor);
+    // ── Reveal on scroll ──
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+        });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => revealObs.observe(r));
 
-        // Screen canvas texture (animated code)
-        const screenCanvas = document.createElement('canvas');
-        screenCanvas.width = 512; screenCanvas.height = 320;
-        const sctx = screenCanvas.getContext('2d');
-        const screenTexture = new THREE.CanvasTexture(screenCanvas);
-        const codeLines = [
-            { indent: 0, w: 0.5, c: '#7dd3fc' },
-            { indent: 1, w: 0.7, c: '#a78bfa' },
-            { indent: 1, w: 0.4, c: '#86efac' },
-            { indent: 2, w: 0.8, c: '#fbbf24' },
-            { indent: 2, w: 0.55, c: '#94a3b8' },
-            { indent: 1, w: 0.6, c: '#a78bfa' },
-            { indent: 0, w: 0.35, c: '#7dd3fc' },
-            { indent: 1, w: 0.75, c: '#86efac' },
-            { indent: 2, w: 0.5, c: '#fbbf24' },
-            { indent: 1, w: 0.45, c: '#94a3b8' },
-        ];
-        let codeProgress = 0;
-        function drawScreen() {
-            sctx.fillStyle = '#0a0f1a';
-            sctx.fillRect(0, 0, 512, 320);
-            // header bar
-            sctx.fillStyle = '#131a28';
-            sctx.fillRect(0, 0, 512, 28);
-            ['#ef4444', '#fbbf24', '#22c55e'].forEach((c, i) => {
-                sctx.fillStyle = c;
-                sctx.beginPath(); sctx.arc(18 + i * 20, 14, 5, 0, Math.PI * 2); sctx.fill();
+    // ── Skill bars ──
+    const skillObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            e.target.querySelectorAll('.skill-fill').forEach(bar => {
+                bar.style.width = bar.dataset.w;
             });
-            const visible = Math.floor(codeProgress);
-            for (let i = 0; i < codeLines.length; i++) {
-                if (i > visible) break;
-                const line = codeLines[i];
-                const y = 50 + i * 26;
-                sctx.fillStyle = '#1e293b';
-                sctx.fillText(String(i + 1), 8, y + 4);
-                const x = 30 + line.indent * 28;
-                let w = line.w * 380;
-                if (i === visible) w *= (codeProgress - visible);
-                sctx.fillStyle = line.c;
-                sctx.globalAlpha = 0.85;
-                sctx.fillRect(x, y - 8, w, 10);
-                sctx.globalAlpha = 1;
-            }
-            screenTexture.needsUpdate = true;
-        }
-        sctx.font = '12px monospace';
-        drawScreen();
-
-        const screen = new THREE.Mesh(
-            new THREE.PlaneGeometry(3.2, 2),
-            new THREE.MeshBasicMaterial({ map: screenTexture })
-        );
-        screen.position.set(0, 0.15, 0.06);
-        monitor.add(screen);
-
-        const screenBody = new THREE.Mesh(new THREE.BoxGeometry(3.4, 2.2, 0.12), matDark);
-        screenBody.position.set(0, 0.15, 0);
-        screenBody.castShadow = true;
-        monitor.add(screenBody);
-
-        const stand = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.9, 0.2), matMetal);
-        stand.position.set(0, -1.1, 0);
-        monitor.add(stand);
-        const standBase = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.08, 0.6), matMetal);
-        standBase.position.set(0, -1.5, 0);
-        monitor.add(standBase);
-
-        // Screen light
-        const screenLight = new THREE.PointLight(0x0ea5e9, 2.5, 8);
-        screenLight.position.set(0, 2.6, -1.8);
-        room.add(screenLight);
-
-        // ---- Keyboard & mouse ----
-        const keyboard = new THREE.Mesh(new THREE.BoxGeometry(2, 0.1, 0.7), matDark);
-        keyboard.position.set(0, 2.45, -1.4);
-        keyboard.castShadow = true;
-        room.add(keyboard);
-        const mouse3d = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.1, 0.45), matDark);
-        mouse3d.position.set(1.4, 2.45, -1.4);
-        room.add(mouse3d);
-
-        // ---- Desk lamp ----
-        const lampArm = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.6), matMetal);
-        lampArm.position.set(-2.6, 3.1, -2.4);
-        lampArm.rotation.z = 0.3;
-        room.add(lampArm);
-        const lampHead = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.4, 16, 1, true), matMetal);
-        lampHead.position.set(-2.9, 3.8, -2.4);
-        lampHead.rotation.z = Math.PI + 0.5;
-        room.add(lampHead);
-        const lampLight = new THREE.PointLight(0xffb86c, 3, 7);
-        lampLight.position.set(-2.6, 3.6, -2);
-        lampLight.castShadow = true;
-        room.add(lampLight);
-        const lampBulb = new THREE.Mesh(
-            new THREE.SphereGeometry(0.12, 16, 16),
-            new THREE.MeshBasicMaterial({ color: 0xffd9a0 })
-        );
-        lampBulb.position.copy(lampLight.position);
-        room.add(lampBulb);
-
-        // ---- Chair ----
-        const chair = new THREE.Group();
-        chair.position.set(0, 0, 0.5);
-        room.add(chair);
-        const seat = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.25, 1.6), matDark);
-        seat.position.y = 1.6; seat.castShadow = true;
-        chair.add(seat);
-        const back = new THREE.Mesh(new THREE.BoxGeometry(1.6, 2, 0.2), matDark);
-        back.position.set(0, 2.6, 0.8); back.castShadow = true;
-        chair.add(back);
-        const chairPost = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 1.4), matMetal);
-        chairPost.position.y = 0.8;
-        chair.add(chairPost);
-
-        // ---- Plant ----
-        const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.25, 0.5), new THREE.MeshStandardMaterial({ color: 0x2a3142, roughness: 0.8 }));
-        pot.position.set(3, 2.55, -2.4); pot.castShadow = true;
-        room.add(pot);
-        for (let i = 0; i < 8; i++) {
-            const leaf = new THREE.Mesh(
-                new THREE.ConeGeometry(0.12, 0.9, 6),
-                new THREE.MeshStandardMaterial({ color: 0x16a34a, roughness: 0.7 })
-            );
-            const a = (i / 8) * Math.PI * 2;
-            leaf.position.set(3 + Math.cos(a) * 0.18, 3.1, -2.4 + Math.sin(a) * 0.18);
-            leaf.rotation.set(Math.cos(a) * 0.4, 0, Math.sin(a) * 0.4);
-            room.add(leaf);
-        }
-
-        // ---- Neon strips (brand accent) ----
-        function neonStrip(color, x1, y1, z1, x2, y2, z2) {
-            const points = [new THREE.Vector3(x1, y1, z1), new THREE.Vector3(x2, y2, z2)];
-            const geo = new THREE.BufferGeometry().setFromPoints(points);
-            const mat = new THREE.LineBasicMaterial({ color });
-            const line = new THREE.Line(geo, mat);
-            room.add(line);
-            const light = new THREE.PointLight(color, 1.2, 9);
-            light.position.set((x1 + x2) / 2, (y1 + y2) / 2, (z1 + z2) / 2);
-            room.add(light);
-        }
-        neonStrip(0x0ea5e9, -5.9, 9, -5.9, -5.9, 9, 5.9);   // left wall top
-        neonStrip(0x6366f1, -5.9, 1, -5.9, 5.9, 1, -5.9);   // back wall low
-        neonStrip(0x0ea5e9, -5.9, 11, -5.9, 5.9, 11, -5.9); // back wall top
-
-        // Neon glowing tubes (visible bars)
-        const tubeMatBlue = new THREE.MeshBasicMaterial({ color: 0x0ea5e9 });
-        const tubeMatPurple = new THREE.MeshBasicMaterial({ color: 0x6366f1 });
-        const tube1 = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.08, 11.5), tubeMatBlue);
-        tube1.position.set(-5.92, 9, 0);
-        room.add(tube1);
-        const tube2 = new THREE.Mesh(new THREE.BoxGeometry(11.5, 0.08, 0.08), tubeMatPurple);
-        tube2.position.set(0, 1.2, -5.92);
-        room.add(tube2);
-
-        // ---- Lighting ----
-        scene.add(new THREE.AmbientLight(0x1a2433, 1.2));
-        const keyLight = new THREE.DirectionalLight(0x6688cc, 0.6);
-        keyLight.position.set(5, 10, 5);
-        keyLight.castShadow = true;
-        keyLight.shadow.mapSize.set(1024, 1024);
-        keyLight.shadow.camera.near = 1;
-        keyLight.shadow.camera.far = 30;
-        scene.add(keyLight);
-
-        // ---- Controls ----
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.06;
-        controls.target.set(0, 2.5, -2);
-        controls.minDistance = 5;
-        controls.maxDistance = 13;
-        controls.maxPolarAngle = Math.PI / 2.05;
-        controls.minPolarAngle = Math.PI / 6;
-        controls.enablePan = false;
-        controls.autoRotate = true;
-        controls.autoRotateSpeed = 0.5;
-        controls.update();
-
-        // Stop auto-rotate on interaction, resume after idle
-        let idleTimer;
-        controls.addEventListener('start', () => {
-            controls.autoRotate = false;
-            clearTimeout(idleTimer);
+            skillObs.unobserve(e.target);
         });
-        controls.addEventListener('end', () => {
-            clearTimeout(idleTimer);
-            idleTimer = setTimeout(() => { controls.autoRotate = true; }, 4000);
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.skill-group').forEach(g => skillObs.observe(g));
+
+    // ── Card tilt effect ──
+    document.querySelectorAll('.tilt-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
+            const rotX = (y - cy) / cy * -8;
+            const rotY = (x - cx) / cx * 8;
+            card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+            card.style.setProperty('--mx', (x / rect.width * 100) + '%');
+            card.style.setProperty('--my', (y / rect.height * 100) + '%');
         });
-
-        // ---- Resize ----
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
         });
-
-        // ---- Animate ----
-        let firstFrame = true;
-        const clock = new THREE.Clock();
-        function animate() {
-            requestAnimationFrame(animate);
-            const t = clock.getElapsedTime();
-
-            // typing animation on screen
-            codeProgress += 0.04;
-            if (codeProgress > codeLines.length + 4) codeProgress = 0;
-            drawScreen();
-
-            // subtle lamp flicker
-            lampLight.intensity = 3 + Math.sin(t * 8) * 0.08;
-
-            controls.update();
-            renderer.render(scene, camera);
-
-            if (firstFrame) {
-                firstFrame = false;
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 700);
-            }
-        }
-        animate();
+    });
     </script>
 
 </body>
